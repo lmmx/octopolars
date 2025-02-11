@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/pypi/l/octopolars.svg)](https://pypi.python.org/pypi/octopolars)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/lmmx/octopolars/master.svg)](https://results.pre-commit.ci/latest/github/lmmx/octopolars/master)
 
-List and filter GitHub user repo inventories and their files with Polars.
+Pull, filter, and walk a GitHub user's repositories with Polars.
 
 ## Installation
 

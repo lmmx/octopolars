@@ -31,7 +31,7 @@ dependencies = [
     "requests>=2.32.3",
     "universal-pathlib>=0.2.6",
 ]
-description = "List and filter GitHub user repo inventories and their files with Polars."
+description = "Pull, filter, and walk a GitHub user's repositories with Polars."
 keywords = [
     "fsspec",
     "github",
