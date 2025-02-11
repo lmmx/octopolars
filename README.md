@@ -28,7 +28,7 @@ pip install octopolars
 - Python 3.9+
 - [gh](https://cli.github.com/) GitHub CLI tool, for a [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
   to avoid rate limits and enable file listings.
-  - **alternatively** set the `GITHUB_TOKEN` environment variable as your GitHub token.
+    - **alternatively** set the `GITHUB_TOKEN` environment variable as your GitHub token.
 
 octopolars is supported by:
 
