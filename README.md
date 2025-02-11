@@ -18,7 +18,6 @@ pip install octopolars
 
 > The `polars` dependency is required but not included in the package by default.
 > It is shipped as an optional extra which can be activated by passing it in square brackets:
->
 > ```bash
 > pip install octopolars[polars]          # most users can install regular Polars
 > pip install octopolars[polars-lts-cpu]  # for backcompatibility with older CPUs
