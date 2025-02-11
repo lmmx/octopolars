@@ -293,8 +293,7 @@ class Inventory:
         no_recurse: bool = False,
         skip_larger_than_mb: int | None = None,
     ) -> pl.DataFrame:
-        """
-        Read *all* file contents in each matched repository path.
+        """Read *all* file contents in each matched repository path.
 
         This enumerates all files (via walk_file_trees) that match `pattern`,
         then reads their text content if they are not directories.
@@ -312,6 +311,7 @@ class Inventory:
                 - "file_path": str
                 - "file_size_bytes": int
                 - "content": str (file content, or empty if directory/failed)
+
         """
         # First, get a listing
         file_tree = self.walk_file_trees(
@@ -333,7 +333,7 @@ class Inventory:
                         "file_path": row["file_path"],
                         "file_size_bytes": row["file_size_bytes"],
                         "content": "",
-                    }
+                    },
                 )
                 continue
 
@@ -367,6 +367,6 @@ class Inventory:
                     "file_path": file_path,
                     "file_size_bytes": row["file_size_bytes"],
                     "content": content_str,
-                }
+                },
             )
         return pl.DataFrame(rows)

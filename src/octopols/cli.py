@@ -9,7 +9,40 @@ import click
 from .inventory import Inventory
 
 
-@click.command()
+@click.command(
+    help="""Octopols - A CLI for listing GitHub repos or files by username, with filters.
+
+    By default, this prints a table of repositories.
+
+      The --walk/-w flag walks the files rather than just listing the repos.
+
+      The --extract/-x flag reads all matching files (use with caution).
+
+      The --filter/-f flag (if provided) applies a Polars expression, or column DSL that is expanded to one (e.g., '{name}.str.starts_with("a")'), to the DataFrame of repos.
+
+      The --short/-s flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
+
+    \b
+    Examples
+    --------
+
+    - List all repos
+
+        octopols lmmx
+
+    - List all repos that start with 'd'
+
+        octopols lmmx -f '{name}.str.starts_with("d")'
+
+    - List only file paths from matching repos
+
+        octopols lmmx -w --filter='{name} == "myrepo"'
+
+    - Read the *content* of all files from matching repos
+
+        octopols lmmx -x --filter='{name}.str.starts_with("d3")'
+"""
+)
 @click.argument("username", type=str)
 @click.option("-w", "--walk", is_flag=True, help="Walk files (default lists repos).")
 @click.option(
@@ -65,33 +98,6 @@ def octopols(
     short: bool,
     filter_expr: str,
 ) -> None:
-    """Octopols - A CLI for listing GitHub repos or files by username, with filters.
-
-    By default, this prints a table of repositories.
-
-      The --walk/-w flag walks the files rather than just listing the repos.\n
-      The --extract/-x flag reads all matching files (use with caution).\n
-      The --filter/-f flag (if provided) applies a Polars expression, or column DSL that is expanded to one (e.g., '{name}.str.starts_with("a")'), to the DataFrame of repos.\n
-      The --short/-s flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
-
-    Examples
-
-        - List all repos
-
-            octopols lmmx
-
-        - List all repos that start with 'd'
-
-            octopols lmmx -f '{name}.str.starts_with("d")'
-
-        - List only file paths from matching repos
-
-            octopols lmmx -w --filter='{name} == "myrepo"'
-
-        - Read the *content* of all files from matching repos
-
-            octopols lmmx -x --filter='{name}.str.starts_with("d3")'
-    """
     # Determine table dimensions
     show_tbl_rows = rows
     show_tbl_cols = cols
