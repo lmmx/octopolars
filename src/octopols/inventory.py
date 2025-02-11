@@ -148,7 +148,7 @@ class Inventory:
                     repos = cached_data
                 else:
                     raise  # or handle this more gracefully in real usage
-        repos = repos.filter(self.repo_filter)
+        repos = repos.filter(True if self.repo_filter is None else self.repo_filter)
         return repos
 
     def _fetch_from_github(self) -> pl.DataFrame:

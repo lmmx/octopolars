@@ -4,16 +4,10 @@ requires = [
   "pdm-backend"
 ]
 
-[dependency-groups]
-dev = [
-  "pdm>=2.22.3",
-  "pdm-bump>=0.9.10"
-]
-
 [project]
-name = "octopols"
+name = "octopolars"
 version = "0.1.0"
-description = "Code Masking and Pattern Analysis Pipeline"
+description = "List and filter GitHub user repo inventories and their files with Polars."
 readme = "README.md"
 authors = [
   {name = "Louis Maddox", email = "louismmx@gmail.com"}
@@ -26,6 +20,12 @@ dependencies = [
   "pygithub>=2.5.0",
   "requests>=2.32.3",
   "universal-pathlib>=0.2.6"
+]
+keywords = [
+  "github",
+  "polars",
+  "fsspec",
+  "repositories",
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -53,7 +53,20 @@ polars-lts-cpu = [
 dev = [
   "pre-commit>=4.1.0",
   "pytest>=8.3.4"
+    "pdm-bump>=0.9.10",
+    "pdm>=2.22.3",
 ]
+docs = [
+    "livereload>=2.7.1",
+    "mkdocs-extra-sass-mathshim>=0.1.0",
+    "mkdocs-material[recommended,imaging]>=9.5.2",
+    "mkdocs-section-index>=0.3.8",
+    "mkdocs>=1.5.3",
+    "mkdocstrings[python]>=0.24.0",
+    "ruff>=0.9.5",
+    "urllib3<2",
+]
+
 
 [project.scripts]
 octopols = "octopols.cli:main"
@@ -61,3 +74,24 @@ octopols = "octopols.cli:main"
 [project.urls]
 Homepage = "https://github.com/lmmx/octopols"
 Repository = "https://github.com/lmmx/octopols.git"
+Documentation = "https://octopolars.vercel.app/"
+
+[tool.ruff]
+
+[tool.ruff.lint]
+ignore = ["C408", "C901", "E501", "E722", "E741"]
+select = ["C", "D", "E", "F", "I", "UP", "W"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["page_dewarp"]
+lines-after-imports = 2
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E401", "F401"]
+
+[tool.tomlsort]
+all = true
+in_place = true
+spaces_before_inline_comment = 2
+spaces_indent_inline_array = 4
+trailing_comma_inline_array = true
