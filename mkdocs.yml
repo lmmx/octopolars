@@ -1,7 +1,7 @@
-site_name: Page Dewarp
+site_name: Octopolars
 site_author: Louis Maddox
 site_description: >-
-  Document image dewarping library using a cubic sheet model
+  Pull, filter, and walk a GitHub user's repositories with Polars.
 site_url: https://octopolars.vercel.app
 repo_name: lmmx/octopolars
 repo_url: https://github.com/lmmx/octopolars
