@@ -227,17 +227,20 @@ class Inventory:
         Discovers (but does not read) file paths that match a given glob pattern.
 
         Args:
+        ----
             pattern: Glob pattern for file listing. By default "**" (recursive).
             no_recurse: If True, uses "*" (non-recursive) instead of the default "**".
             skip_larger_than_mb: If set, skip listing files larger than this many MB.
                                  By default, None (don't skip based on size).
 
         Returns:
+        -------
             A Polars DataFrame with columns:
                 - "repository_name": str
                 - "file_path": str
                 - "is_directory": bool
                 - "file_size_bytes": int
+
         """
         if self._inventory_df is None:
             self.list_repos()

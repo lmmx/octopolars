@@ -38,6 +38,7 @@ keywords = [
     "polars",
     "repositories",
 ]
+license = {text = "MIT"}
 name = "octopolars"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -68,7 +69,7 @@ polars-lts-cpu = [
 ]
 
 [project.scripts]
-octopols = "octopols.cli:main"
+octopols = "octopols.cli:octopols"
 
 [project.urls]
 Documentation = "https://octopolars.vercel.app/"

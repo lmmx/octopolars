@@ -1,4 +1,4 @@
-"""This module provides the CLI command for Octopols."""
+"""Provides the `octopols` CLI command for Octopolars."""
 
 from __future__ import annotations
 
@@ -52,7 +52,7 @@ from .inventory import Inventory
         "e.g. '{name}.str.startswith(\"a\")'"
     ),
 )
-def main(
+def octopols(
     username: str,
     walk: bool,
     output_format: str,
@@ -61,7 +61,7 @@ def main(
     short: bool,
     filter_expr: str,
 ) -> None:
-    """Octopols - A CLI for listing GitHub repos or files by username, with optional recursion,
+    """octopols - A CLI for listing GitHub repos or files by username, with controls for
     table formatting, and Polars-based filtering.
 
       The --walk/-w flag walks the files rather than just listing the repos.
@@ -72,7 +72,7 @@ def main(
       By default, rows and cols are unlimited (-1). Use --short/-s to switch to a minimal view.
 
     Examples
-
+    --------
         octopols lmmx
 
         octopols lmmx -f '{name}.str.starts_with("d")'
