@@ -41,7 +41,7 @@ from .inventory import Inventory
     - Read the *content* of all files from matching repos
 
         octopols lmmx -x --filter='{name}.str.starts_with("d3")'
-"""
+""",
 )
 @click.argument("username", type=str)
 @click.option("-w", "--walk", is_flag=True, help="Walk files (default lists repos).")
@@ -98,6 +98,7 @@ def octopols(
     short: bool,
     filter_expr: str,
 ) -> None:
+    """CLI to print a user's repo listings, with options to walk and read files."""
     # Determine table dimensions
     show_tbl_rows = rows
     show_tbl_cols = cols
