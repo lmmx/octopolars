@@ -12,9 +12,12 @@ from .inventory import Inventory
 @click.command()
 @click.argument("username", type=str)
 @click.option("-w", "--walk", is_flag=True, help="Walk files (default lists repos).")
-# @click.option(
-#     "-R", "--recursive", is_flag=True, help="Recursively list items (repos or files)."
-# )
+@click.option(
+    "-x",
+    "--extract",
+    is_flag=True,
+    help="Read the text content of each file (not directories). Use with caution on large sets!",
+)
 @click.option(
     "-o",
     "--output-format",
@@ -49,12 +52,13 @@ from .inventory import Inventory
     help=(
         "A Polars expression or a shorthand DSL expression. "
         "In the DSL, use {column} to refer to pl.col('column'), "
-        "e.g. '{name}.str.startswith(\"a\")'"
+        """e.g. '{name}.str.startswith("a")'."""
     ),
 )
 def octopols(
     username: str,
     walk: bool,
+    extract: bool,
     output_format: str,
     rows: int,
     cols: int,
@@ -63,31 +67,39 @@ def octopols(
 ) -> None:
     """Octopols - A CLI for listing GitHub repos or files by username, with filters.
 
-      The --walk/-w flag walks the files rather than just listing the repos.
+    By default, this prints a table of repositories.
 
-      The --filter/-f flag (if provided) applies a Polars expression or DSL expression
-      (e.g., '{name}.str.startswith("a")') to the DataFrame of items.
-
-      By default, rows and cols are unlimited (-1). Use --short/-s to switch to a minimal view.
+      The --walk/-w flag walks the files rather than just listing the repos.\n
+      The --extract/-x flag reads *all* matching files' content (avoid for large file sets).\n
+      The --filter/-f flag (if provided) applies a Polars expression, or column DSL that is expanded to one (e.g., '{name}.str.startswith("a")'), to the DataFrame of repos.\n
+      The --short/-s flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
 
     Examples
-    --------
-        octopols lmmx
 
-        octopols lmmx -f '{name}.str.starts_with("d")'
+        - List all repos
 
-        octopols lmmx -f '{name}.str.contains("demo")' -w
+            octopols lmmx
 
+        - List all repos that start with 'd'
+
+            octopols lmmx -f '{name}.str.startswith("d")'
+
+        - List only file paths from matching repos
+
+            octopols lmmx -w --filter='{name} == "myrepo"'
+
+        - Read the *content* of all files from matching repos
+
+            octopols lmmx --read-files --filter='{name}.str.contains("demo")'
     """
     # Determine table dimensions
     show_tbl_rows = rows
     show_tbl_cols = cols
-
     if short:
         show_tbl_rows = None
         show_tbl_cols = None
 
-    # Initialize the inventory with the chosen row/col limits
+    # Initialise Inventory (nothing is requested until fetching)
     inventory = Inventory(
         username=username,
         show_tbl_rows=show_tbl_rows,
@@ -96,16 +108,20 @@ def octopols(
     )
 
     try:
-        # Decide whether to list repos or files, recursively or not
-        if walk:
+        if read_files:
+            # Read all files from each matched repository
+            items = inventory.read_files()
+        elif walk:
+            # Merely list file paths
             items = inventory.walk_file_trees()
         else:
+            # Default: list repositories
             items = inventory.list_repos()
     except Exception as exc:
         click.echo(f"Error: {exc}", err=True)
         sys.exit(1)
 
-    # Finally, output in the requested format
+    # Output in the requested format
     if output_format == "csv":
         click.echo(items.write_csv())
     elif output_format == "json":

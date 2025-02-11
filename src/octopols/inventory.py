@@ -245,7 +245,6 @@ class Inventory:
         """
         if self._inventory_df is None:
             self.list_repos()
-        # Adjust pattern if user wants a shallow (non-recursive) listing
         if no_recurse:
             pattern = "*"
         records = []
@@ -287,3 +286,87 @@ class Inventory:
                 "file_size_bytes": pl.Int64,
             },
         )
+
+    def read_files(
+        self,
+        pattern: str = "**",
+        no_recurse: bool = False,
+        skip_larger_than_mb: int | None = None,
+    ) -> pl.DataFrame:
+        """
+        Read *all* file contents in each matched repository path.
+
+        This enumerates all files (via walk_file_trees) that match `pattern`,
+        then reads their text content if they are not directories.
+
+        Args:
+        ----
+            pattern: Glob pattern for file listing. Default "**" means recursive.
+            no_recurse: If True, uses "*" instead of "**".
+            skip_larger_than_mb: Optional size limit in MB. If set, skip any file above it.
+
+        Returns:
+        -------
+            A Polars DataFrame with columns:
+                - "repository_name": str
+                - "file_path": str
+                - "file_size_bytes": int
+                - "content": str (file content, or empty if directory/failed)
+        """
+        # First, get a listing
+        file_tree = self.walk_file_trees(
+            pattern=pattern,
+            no_recurse=no_recurse,
+            skip_larger_than_mb=skip_larger_than_mb,
+        )
+        if file_tree.is_empty():
+            return file_tree
+
+        # We'll accumulate a new DataFrame with the file content
+        rows = []
+        for row in file_tree.to_dicts():
+            if row["is_directory"]:
+                # Skip directories; no content to read
+                rows.append(
+                    {
+                        "repository_name": row["repository_name"],
+                        "file_path": row["file_path"],
+                        "file_size_bytes": row["file_size_bytes"],
+                        "content": "",
+                    }
+                )
+                continue
+
+            repo_name = row["repository_name"]
+            file_path = row["file_path"]
+            # We'll look up the default branch from the known repos
+            default_branch = (
+                self._inventory_df.filter(pl.col("name") == repo_name)
+                .select("default_branch")
+                .item()
+            )
+
+            ghpath = UPath(
+                "/",
+                protocol="github",
+                org=self.username,
+                repo=repo_name,
+                sha=default_branch,
+                username=self.username,
+                token=self.token,
+            )
+            p = ghpath / file_path
+            try:
+                content_str = p.read_text()
+            except Exception:
+                content_str = ""
+
+            rows.append(
+                {
+                    "repository_name": repo_name,
+                    "file_path": file_path,
+                    "file_size_bytes": row["file_size_bytes"],
+                    "content": content_str,
+                }
+            )
+        return pl.DataFrame(rows)
