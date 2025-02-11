@@ -117,30 +117,66 @@ shape: (226, 9)
 #### Example 2: Filter Repos by Name
 
 ```bash
-octopols lmmx -f '{name}.str.starts_with("d3")'
+octopols lmmx -f '{name}.str.contains("demo")'
 ```
 
-Uses the DSL expression to select only repositories whose name starts with “d.”
+Uses the DSL expression to select only repositories with “demo” in the repo name.
 
 ```
-shape: (2, 9)
-┌────────────────────┬────────────────┬─────────────────────────────────┬──────────┬─────────┬────────┬───────┬───────┬──────┐
-│ name               ┆ default_branch ┆ description                     ┆ archived ┆ is_fork ┆ issues ┆ stars ┆ forks ┆ size │
-│ ---                ┆ ---            ┆ ---                             ┆ ---      ┆ ---     ┆ ---    ┆ ---   ┆ ---   ┆ ---  │
-│ str                ┆ str            ┆ str                             ┆ bool     ┆ bool    ┆ i64    ┆ i64   ┆ i64   ┆ i64  │
-╞════════════════════╪════════════════╪═════════════════════════════════╪══════════╪═════════╪════════╪═══════╪═══════╪══════╡
-│ d3-step-functions  ┆ master         ┆ AWS Step Function visualisatio… ┆ false    ┆ false   ┆ 1      ┆ 1     ┆ 0     ┆ 94   │
-│ d3-wiring-diagrams ┆ master         ┆ Wiring diagram operad visualis… ┆ false    ┆ false   ┆ 2      ┆ 2     ┆ 0     ┆ 111  │
-└────────────────────┴────────────────┴─────────────────────────────────┴──────────┴─────────┴────────┴───────┴───────┴──────┘
+shape: (9, 9)
+┌──────────────────────────────┬────────────────┬─────────────────────────────────┬──────────┬─────────┬────────┬───────┬───────┬───────┐
+│ name                         ┆ default_branch ┆ description                     ┆ archived ┆ is_fork ┆ issues ┆ stars ┆ forks ┆ size  │
+│ ---                          ┆ ---            ┆ ---                             ┆ ---      ┆ ---     ┆ ---    ┆ ---   ┆ ---   ┆ ---   │
+│ str                          ┆ str            ┆ str                             ┆ bool     ┆ bool    ┆ i64    ┆ i64   ┆ i64   ┆ i64   │
+╞══════════════════════════════╪════════════════╪═════════════════════════════════╪══════════╪═════════╪════════╪═══════╪═══════╪═══════╡
+│ aiohttp-demos                ┆ master         ┆ Demos for aiohttp project       ┆ false    ┆ true    ┆ 0      ┆ 0     ┆ 0     ┆ 45445 │
+│ demopyrs                     ┆ master         ┆ Demo Python/Rust extension lib… ┆ false    ┆ false   ┆ 0      ┆ 0     ┆ 0     ┆ 18    │
+│ importstring_demo            ┆ master         ┆ Demo of deptry inability to de… ┆ false    ┆ false   ┆ 0      ┆ 1     ┆ 0     ┆ 7     │
+│ pyd2ts-demo                  ┆ master         ┆ Demo of a Pydantic model conve… ┆ false    ┆ false   ┆ 0      ┆ 0     ┆ 0     ┆ 761   │
+│ react-htmx-demo              ┆ master         ┆ Demo app combining HTMX and Re… ┆ false    ┆ false   ┆ 0      ┆ 0     ┆ 0     ┆ 2     │
+│ self-serve-demo              ┆ master         ┆ Python package auto-generated … ┆ false    ┆ false   ┆ 1      ┆ 1     ┆ 0     ┆ 14    │
+│ sphinx-type-annotations-demo ┆ master         ┆ [Resolved] A demo of how to bu… ┆ false    ┆ false   ┆ 1      ┆ 0     ┆ 0     ┆ 39    │
+│ uv-doc-url-demo              ┆ master         ┆ Proof-of-concept for extractin… ┆ false    ┆ false   ┆ 0      ┆ 0     ┆ 0     ┆ 27    │
+│ uv-ws-demo                   ┆ master         ┆ A simple demo of the new works… ┆ false    ┆ false   ┆ 0      ┆ 1     ┆ 0     ┆ 15    │
+└──────────────────────────────┴────────────────┴─────────────────────────────────┴──────────┴─────────┴────────┴───────┴───────┴───────┘
 ```
 
-#### Example 3: Filter Repos by Name, List all Files
+#### Example 3: Walk an entire Repo
+
+```bash
+octopols lmmx -f '{name} == "mvdef"' --walk --short
+```
+
+Lists all files in the repository named "mvdef".
+
+```
+shape: (121, 4)
+┌─────────────────┬─────────────────────────────────┬──────────────┬─────────────────┐
+│ repository_name ┆ file_path                       ┆ is_directory ┆ file_size_bytes │
+│ ---             ┆ ---                             ┆ ---          ┆ ---             │
+│ str             ┆ str                             ┆ bool         ┆ i64             │
+╞═════════════════╪═════════════════════════════════╪══════════════╪═════════════════╡
+│ mvdef           ┆ .github                         ┆ true         ┆ 0               │
+│ mvdef           ┆ .github/CONTRIBUTING.md         ┆ false        ┆ 3094            │
+│ mvdef           ┆ .github/workflows               ┆ true         ┆ 0               │
+│ mvdef           ┆ .github/workflows/master.yml    ┆ false        ┆ 3398            │
+│ mvdef           ┆ .gitignore                      ┆ false        ┆ 204             │
+│ …               ┆ …                               ┆ …            ┆ …               │
+│ mvdef           ┆ tools                           ┆ true         ┆ 0               │
+│ mvdef           ┆ tools/github                    ┆ true         ┆ 0               │
+│ mvdef           ┆ tools/github/install_miniconda… ┆ false        ┆ 353             │
+│ mvdef           ┆ tox.ini                         ┆ false        ┆ 1251            │
+│ mvdef           ┆ vercel.json                     ┆ false        ┆ 133             │
+└─────────────────┴─────────────────────────────────┴──────────────┴─────────────────┘
+```
+
+#### Example 4: Filter Repos by Name, List all Files
 
 ```bash
 octopols lmmx -f '{name}.str.starts_with("d3") --walk'
 ```
 
-Lists *all* files in every repository starting with "d3" owned by "lmmx", as a table of file paths.
+Lists *all* files in every repository whose (repo) name starts with "d3" owned by "lmmx", as a table of file paths.
 
 ```
 shape: (12, 4)
