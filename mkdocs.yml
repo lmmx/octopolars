@@ -1,7 +1,7 @@
 site_name: Octopolars
 site_author: Louis Maddox
 site_description: >-
-  Pull, filter, and walk a GitHub user's repositories with Polars.
+  Pull, filter, walk, and read a GitHub user's repositories with Polars.
 site_url: https://octopolars.vercel.app
 repo_name: lmmx/octopolars
 repo_url: https://github.com/lmmx/octopolars
