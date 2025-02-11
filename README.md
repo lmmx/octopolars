@@ -30,7 +30,7 @@ pip install octopolars
   to avoid rate limits and enable file listings.
   - **alternatively** set the `GITHUB_TOKEN` environment variable as your GitHub token.
 
-`octopolars` is supported by these tools:
+octopolars is supported by:
 
 - [Polars](https://www.pola.rs/) for efficient data filtering and output formatting.
 - [PyGithub](https://github.com/PyGithub/PyGithub) (for GitHub API access to enumerate the repos)
@@ -177,7 +177,7 @@ shape: (121, 4)
 #### Example 4: Filter Repos by Name, List all Files
 
 ```bash
-octopols lmmx -f '{name}.str.starts_with("d3") --walk'
+octopols lmmx -f '{name}.str.starts_with("d3")' --walk
 ```
 
 Lists *all* files in every repository whose (repo) name starts with "d3" owned by "lmmx", as a table of file paths.
