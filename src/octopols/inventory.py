@@ -1,4 +1,5 @@
-# src/octopols/inventory.py
+"""This module provides functionality to retrieve and parse a GitHub user's repositories/files."""
+
 from __future__ import annotations
 
 import os
@@ -29,13 +30,19 @@ dsl_pattern = re.compile(r"\{(\w+)\}")
 
 
 def expand_short_filter(filter_expr: str) -> str:
-    """Converts DSL tokens like '{name}' into 'pl.col("name")' for Polars expressions.
-    Example: '{name}.str.startswith("a")' -> 'pl.col("name").str.startswith("a")'
+    """Convert DSL tokens like '{name}' into 'pl.col("name")' for Polars expressions.
+
+    Example: '{name}.str.startswith("a")' -> 'pl.col("name").str.startswith("a")'.
     """
     return dsl_pattern.sub(r'pl.col("\g<1>")', filter_expr)
 
 
 def prepare_expr(expr: str | pl.Expr | None) -> pl.Expr | None:
+    """Prepare a Polars expression from either a string DSL or an existing pl.Expr.
+
+    Evaluates the DSL expression if given a string, expanding short filter tokens,
+    and returns the resulting Polars expression. Returns None if expr is None.
+    """
     if expr is not None:
         match expr:
             case pl.Expr() as expr:
@@ -105,11 +112,11 @@ class Inventory:
             self._cfg.set_tbl_rows(show_tbl_rows)
 
     def list_repos(self) -> pl.DataFrame:
-        """Fetches and parses the public repositories for the specified GitHub user.
-        Checks the local cache first (unless force_refresh=True).
-        Returns a Polars DataFrame with columns such as 'name', 'html_url', and 'description'.
+        """Fetch and parse the public repositories for the specified GitHub user.
+
+        Checks the local cache first (unless force_refresh=True). Returns a Polars DataFrame
+        with the columns 'name', 'html_url', and 'description'.
         """
-        # 1. Retrieve the user’s repos (cached or fresh)
         self._inventory_df = self._retrieve_repos()
         return self._inventory_df
 
@@ -119,39 +126,43 @@ class Inventory:
         to_v: str = "latest",
     ) -> pl.DataFrame:
         """Compare repository metadata across two versions (placeholder).
+
         Currently returns a trivial DataFrame.
         """
         return pl.DataFrame({"from_v": [from_v], "to_v": [to_v]})
 
     def _retrieve_repos(self) -> pl.DataFrame:
-        """Tries to use cached results if use_cache=True (and not force_refresh).
-        Otherwise, fetches from GitHub and caches the JSON if successful.
+        """Try to use cached results if use_cache=True (and not force_refresh).
+
+        Otherwise, fetch from GitHub and cache the JSON if successful.
         """
-        # If using cache and not forcing a refresh, try reading from file
         if self.use_cache and not self.force_refresh:
             cached_data = self._read_cache()
             if cached_data is not None:
                 repos = cached_data
+            else:
+                repos = self._fetch_from_github()
+                self._write_cache(repos)
         else:
-            # Otherwise, fetch from GitHub
             try:
-                repos_data = self._fetch_from_github()
-                # Cache the data
-                self._write_cache(repos_data)
-                repos = repos_data
+                repos = self._fetch_from_github()
+                self._write_cache(repos)
             except Exception as e:
-                # If something goes wrong with GitHub fetching, fallback to cache if it exists
                 cached_data = self._read_cache()
                 if cached_data is not None:
                     print(f"GitHub fetch failed ({e}), returning cached data.")
                     repos = cached_data
                 else:
-                    raise  # or handle this more gracefully in real usage
+                    raise
+
         repos = repos.filter(True if self.repo_filter is None else self.repo_filter)
         return repos
 
     def _fetch_from_github(self) -> pl.DataFrame:
-        """Uses PyGithub to retrieve the user's public repositories."""
+        """Use PyGithub to retrieve the user's public repositories.
+
+        Returns a Polars DataFrame with repo information.
+        """
         gh = Github(self.token) if self.token else Github()
         user = gh.get_user(self.username)
         repos = user.get_repos()
@@ -187,7 +198,8 @@ class Inventory:
         return df.lazy().collect() if self.lazy else df
 
     def _read_cache(self) -> pl.DataFrame | None:
-        """Attempt to read previously cached JSON data from disk.
+        """Read previously cached JSON data from disk.
+
         Returns None if no file or if something fails to load.
         """
         if not self._cache_file.is_file():
@@ -210,32 +222,23 @@ class Inventory:
         no_recurse: bool = False,
         skip_larger_than_mb: int | None = None,
     ) -> pl.DataFrame:
-        """Walks (recursively enumerates) files in each repository via UPath,
-        discovering (but not reading) file paths that match a given glob pattern.
+        """Walk (recursively enumerate) files in each repository via UPath.
+
+        Discovers (but does not read) file paths that match a given glob pattern.
 
         Args:
-        ----
             pattern: Glob pattern for file listing. By default "**" (recursive).
             no_recurse: If True, uses "*" (non-recursive) instead of the default "**".
             skip_larger_than_mb: If set, skip listing files larger than this many MB.
                                  By default, None (don't skip based on size).
 
         Returns:
-        -------
             A Polars DataFrame with columns:
-                - "Repository_Name": str
-                - "File_Path": str (the path in the GitHub “filesystem”)
-                - "Is_Directory": bool
-                - "File_Size_Bytes": int
-
-        Notes:
-        -----
-            - **Slow** for large repos or wide patterns, as it enumerates all matches.
-            - If skip_larger_than_mb is set, we call `p.stat().st_size` for each file,
-              skipping ones that exceed that threshold.
-
+                - "repository_name": str
+                - "file_path": str
+                - "is_directory": bool
+                - "file_size_bytes": int
         """
-        # Ensure we have a repo inventory
         if self._inventory_df is None:
             self.list_repos()
         # Adjust pattern if user wants a shallow (non-recursive) listing
@@ -245,27 +248,23 @@ class Inventory:
         for row in self._inventory_df.to_dicts():
             repo_name = row["name"]
             default_branch = row["default_branch"]
-            # Construct a GitHub UPath; note org=self.username for personal repos
             ghpath = UPath(
                 "/",
                 protocol="github",
                 org=self.username,
                 repo=repo_name,
                 sha=default_branch,
-                username=self.username,  # used for BasicAuth
-                token=self.token,  # personal access token
+                username=self.username,
+                token=self.token,
             )
             for p in ghpath.glob(pattern):
-                # Check if directory
                 if is_dir := p.is_dir():
                     file_size_bytes = 0
                 else:
-                    # For skipping large files or just capturing size
                     file_size_bytes = p.stat().st_size
                     if skip_larger_than_mb is not None:
                         threshold_bytes = skip_larger_than_mb * 1_048_576
                         if file_size_bytes > threshold_bytes:
-                            # Skip this file
                             continue
                 records.append(
                     {
