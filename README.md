@@ -1,22 +1,14 @@
 # octopols
 
-**A CLI and library for listing and filtering GitHub repositories and files using Polars-based data transformations.**
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+[![PyPI](https://img.shields.io/pypi/v/octopolars.svg)](https://pypi.org/projects/octopolars)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/octopolars.svg)](https://pypi.org/project/octopolars)
+[![downloads](https://static.pepy.tech/badge/octopolars/month)](https://pepy.tech/project/octopolars)
+[![License](https://img.shields.io/pypi/l/octopolars.svg)](https://pypi.python.org/pypi/octopolars)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/lmmx/octopolars/master.svg)](https://results.pre-commit.ci/latest/github/lmmx/octopolars/master)
 
-`octopols` leverages [PyGithub](https://github.com/PyGithub/PyGithub) (for GitHub API access) and [fsspec](https://github.com/fsspec/filesystem_spec) within [Universal Pathlib](https://github.com/fsspec/universal_pathlib) with `github` support (for enumerating files in GitHub repos). It uses [Polars](https://www.pola.rs/) for efficient data filtering and output formatting. Through a simple command-line interface, you can:
-
-- **List Repositories**: Fetch public repositories for a specified GitHub user.  
-- **List Files**: Recursively or non-recursively walk through a repository’s file tree.  
-- **Apply Filters**: Use either raw Polars expressions or a shorthand DSL (e.g. `{name}.str.startswith("foo")`) to narrow your data.  
-- **Choose Output Format**: Display results as a table (default), CSV, JSON, or NDJSON.  
-- **Control Table Size**: Limit the number of rows or columns displayed, or use `--short` mode to quickly preview data.
-
-## Features
-
-- **GitHub Repo Enumeration**: Retrieve user’s public repos (caching results to speed up repeated calls).  
-- **File Tree Walking**: Enumerate files in each repository using `fsspec[github]`, supporting recursion and optional size filters.  
-- **Polars-Based Filtering**: Apply complex queries (`pl.col("name").str.contains("test")`) or simpler DSL expressions (`'{name}.str.startswith("a")'`).  
-- **Flexible Output**: Display data in a pretty table (Polars-style) or export to CSV/JSON/NDJSON.  
-- **Caching**: By default, results are cached in the user’s cache directory to avoid repeated API calls (unless you force refresh).  
+List and filter GitHub user repo inventories and their files with Polars.
 
 ## Installation
 
@@ -29,10 +21,27 @@ pip install octopols[polars]
 > pip install octopols[polars-lts-cpu]
 > ```
 
+## Features
+
+- **GitHub repo enumeration**: Retrieve user’s public repos (caching results to speed up repeated calls).
+- **Apply filters**: Use either raw Polars expressions or a shorthand DSL (e.g. `{name}.str.startswith("foo")`) to filter repos.
+- **File tree walking**: Enumerate all files in each repository using `fsspec[github]`, supporting recursion and optional size filters.
+- **Output formats**: Display data in a Polars repr table (which can be [read back in](https://docs.pola.rs/api/python/stable/reference/api/polars.from_repr.html))
+  or export to CSV/JSON/NDJSON.
+- **Control table size**: Limit the number of rows or columns displayed, or use `--short` mode to quickly preview data.
+- **Caching**: By default, results are cached in the user’s cache directory to avoid repeated API calls (unless you force refresh).
+
 ### Requirements
 
-- Python 3.9+  
+- Python 3.9+
 - A GitHub token in your environment (either via `$GITHUB_TOKEN` or by configuring [gh](https://cli.github.com/)) to avoid rate limits and enable file listings.
+
+`octopols` is supported by these tools:
+
+- [Polars](https://www.pola.rs/) for efficient data filtering and output formatting.
+- [PyGithub](https://github.com/PyGithub/PyGithub) (for GitHub API access to enumerate the repos)
+- [fsspec](https://github.com/fsspec/filesystem_spec) within [Universal Pathlib](https://github.com/fsspec/universal_pathlib)
+  which provides a `github://` protocol that enables enumerating files in GitHub repos as if they were local file paths.
 
 ## Usage
 
@@ -44,10 +53,10 @@ octopols [OPTIONS] USERNAME
 
 **Options:**
 
-- `-w, --walk`: Walk files instead of list repos.  
-- `-o, --output-format {table,csv,json,ndjson}`: Control output format (default: table).  
-- `-r, --rows <INT>` / `-c, --cols <INT>`: Limit how many rows/columns to show (default: -1 means unlimited).  
-- `-s, --short`: Override rows/cols limits by setting both to `None` for a concise preview.  
+- `-w, --walk`: Walk files instead of list repos.
+- `-o, --output-format {table,csv,json,ndjson}`: Control output format (default: table).
+- `-r, --rows <INT>` / `-c, --cols <INT>`: Limit how many rows/columns to show (default: -1 means unlimited).
+- `-s, --short`: Override rows/cols limits by setting both to `None` for a concise preview.
 - `-f, --filter <EXPR>`: A Polars expression or DSL expression to filter the DataFrame.
 
 #### Example 1: List All Repos for a User
@@ -149,14 +158,14 @@ files_df = inv.walk_file_trees()
 
 ## Project Structure
 
-- `cli.py`: Defines the CLI (`octopols`) with all available options and flags.  
+- `cli.py`: Defines the CLI (`octopols`) with all available options and flags.
 - `inventory.py`: Core logic for retrieving repos, walking file trees, caching, and applying filters.
 
 ## Contributing
 
-1. **Issues & Discussions**: Please open a GitHub issue or discussion for bugs, feature requests, or questions.  
-2. **Pull Requests**: PRs are welcome!  
-   - Ensure you have [pdm](https://pdm.fming.dev/latest/) installed for local development.  
+1. **Issues & Discussions**: Please open a GitHub issue or discussion for bugs, feature requests, or questions.
+2. **Pull Requests**: PRs are welcome!
+   - Ensure you have [pdm](https://pdm.fming.dev/latest/) installed for local development.
    - Run tests (when available) and include updates to docs or examples if relevant.
 
 ## License

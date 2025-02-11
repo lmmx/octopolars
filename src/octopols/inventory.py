@@ -11,11 +11,14 @@ from github import Github
 from platformdirs import user_cache_dir
 from upath import UPath
 
+
 ENV_GH_TOKEN = os.getenv("GITHUB_TOKEN")
 if ENV_GH_TOKEN is None:
     try:
         tokproc = subprocess.run(
-            ["gh", "auth", "token"], capture_output=True, text=True
+            ["gh", "auth", "token"],
+            capture_output=True,
+            text=True,
         )
         ENV_GH_TOKEN = tokproc.stdout.strip()
     except:
@@ -26,8 +29,7 @@ dsl_pattern = re.compile(r"\{(\w+)\}")
 
 
 def expand_short_filter(filter_expr: str) -> str:
-    """
-    Converts DSL tokens like '{name}' into 'pl.col("name")' for Polars expressions.
+    """Converts DSL tokens like '{name}' into 'pl.col("name")' for Polars expressions.
     Example: '{name}.str.startswith("a")' -> 'pl.col("name").str.startswith("a")'
     """
     return dsl_pattern.sub(r'pl.col("\g<1>")', filter_expr)
@@ -50,8 +52,7 @@ def prepare_expr(expr: str | pl.Expr | None) -> pl.Expr | None:
 
 
 class Inventory:
-    """
-    Provides functionality to retrieve and parse a GitHub user's public repositories
+    """Provides functionality to retrieve and parse a GitHub user's public repositories
     into a Polars DataFrame, caching results locally to avoid repeated API calls.
     """
 
@@ -67,10 +68,10 @@ class Inventory:
         show_tbl_cols: int | None = None,
         show_tbl_rows: int | None = None,
     ) -> None:
-        """
-        Initialise the Inventory object.
+        """Initialise the Inventory object.
 
         Args:
+        ----
             username: The GitHub username to fetch repositories for.
             lazy: Whether to allow lazy Polars operations (not all transformations may be supported).
             token: An optional GitHub personal access token for higher rate limits.
@@ -82,6 +83,7 @@ class Inventory:
                          or an Expr to filter the repository tree in `walk_file_trees`.
             show_tbl_cols: Configure Polars to print N columns if `int` (default: None).
             show_tbl_rows: Configure Polars to print N rows if `int` (default: None).
+
         """
         self.username = username
         self.lazy = lazy
@@ -103,8 +105,7 @@ class Inventory:
             self._cfg.set_tbl_rows(show_tbl_rows)
 
     def list_repos(self) -> pl.DataFrame:
-        """
-        Fetches and parses the public repositories for the specified GitHub user.
+        """Fetches and parses the public repositories for the specified GitHub user.
         Checks the local cache first (unless force_refresh=True).
         Returns a Polars DataFrame with columns such as 'name', 'html_url', and 'description'.
         """
@@ -117,15 +118,13 @@ class Inventory:
         from_v: str = "first",
         to_v: str = "latest",
     ) -> pl.DataFrame:
-        """
-        Compare repository metadata across two versions (placeholder).
+        """Compare repository metadata across two versions (placeholder).
         Currently returns a trivial DataFrame.
         """
         return pl.DataFrame({"from_v": [from_v], "to_v": [to_v]})
 
     def _retrieve_repos(self) -> pl.DataFrame:
-        """
-        Tries to use cached results if use_cache=True (and not force_refresh).
+        """Tries to use cached results if use_cache=True (and not force_refresh).
         Otherwise, fetches from GitHub and caches the JSON if successful.
         """
         # If using cache and not forcing a refresh, try reading from file
@@ -152,9 +151,7 @@ class Inventory:
         return repos
 
     def _fetch_from_github(self) -> pl.DataFrame:
-        """
-        Uses PyGithub to retrieve the user's public repositories.
-        """
+        """Uses PyGithub to retrieve the user's public repositories."""
         gh = Github(self.token) if self.token else Github()
         user = gh.get_user(self.username)
         repos = user.get_repos()
@@ -190,8 +187,7 @@ class Inventory:
         return df.lazy().collect() if self.lazy else df
 
     def _read_cache(self) -> pl.DataFrame | None:
-        """
-        Attempt to read previously cached JSON data from disk.
+        """Attempt to read previously cached JSON data from disk.
         Returns None if no file or if something fails to load.
         """
         if not self._cache_file.is_file():
@@ -202,9 +198,7 @@ class Inventory:
             return None
 
     def _write_cache(self, data: pl.DataFrame) -> None:
-        """
-        Write JSON data to the cache file.
-        """
+        """Write JSON data to the cache file."""
         try:
             data.write_ndjson(self._cache_file)
         except OSError as e:
@@ -216,17 +210,18 @@ class Inventory:
         no_recurse: bool = False,
         skip_larger_than_mb: int | None = None,
     ) -> pl.DataFrame:
-        """
-        Walks (recursively enumerates) files in each repository via UPath,
+        """Walks (recursively enumerates) files in each repository via UPath,
         discovering (but not reading) file paths that match a given glob pattern.
 
         Args:
+        ----
             pattern: Glob pattern for file listing. By default "**" (recursive).
             no_recurse: If True, uses "*" (non-recursive) instead of the default "**".
             skip_larger_than_mb: If set, skip listing files larger than this many MB.
                                  By default, None (don't skip based on size).
 
         Returns:
+        -------
             A Polars DataFrame with columns:
                 - "Repository_Name": str
                 - "File_Path": str (the path in the GitHub “filesystem”)
@@ -234,9 +229,11 @@ class Inventory:
                 - "File_Size_Bytes": int
 
         Notes:
+        -----
             - **Slow** for large repos or wide patterns, as it enumerates all matches.
             - If skip_larger_than_mb is set, we call `p.stat().st_size` for each file,
               skipping ones that exceed that threshold.
+
         """
         # Ensure we have a repo inventory
         if self._inventory_df is None:
@@ -276,7 +273,7 @@ class Inventory:
                         "file_path": os.path.join(*p.parts),
                         "is_directory": is_dir,
                         "file_size_bytes": file_size_bytes,
-                    }
+                    },
                 )
         return pl.DataFrame(
             records,

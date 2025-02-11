@@ -60,8 +60,7 @@ def main(
     short: bool,
     filter_expr: str,
 ) -> None:
-    """
-    octopols - A CLI for listing GitHub repos or files by username, with optional recursion,
+    """Octopols - A CLI for listing GitHub repos or files by username, with optional recursion,
     table formatting, and Polars-based filtering.
 
       By default, rows and cols are unlimited (-1). Use --short/-s to switch to a minimal view.
@@ -71,15 +70,15 @@ def main(
 
       The --walk/-w flag walks the files rather than just listing the repos.
 
-      Examples:
-
+    Examples
+    --------
         octopols lmmx
 
         octopols lmmx -f '{name}.str.startswith("a")'
 
         octopols lmmx -w -filter='pl.col("filename").str.contains("test")'
-    """
 
+    """
     # Determine table dimensions
     show_tbl_rows = rows
     show_tbl_cols = cols
