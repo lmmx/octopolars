@@ -298,6 +298,8 @@ repos_df = inv.list_repos()
 If you want to apply a filter expression programmatically and walk the file trees:
 
 ```python
+import polars as pl
+
 inv = Inventory(username="lmmx", repo_filter=pl.col("name").str.contains("demo"))
 files_df = inv.walk_file_trees()
 ```
