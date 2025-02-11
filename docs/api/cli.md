@@ -1,0 +1,3 @@
+# cli
+
+::: octopols.cli

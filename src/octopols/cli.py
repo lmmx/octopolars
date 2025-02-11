@@ -54,8 +54,7 @@ from .inventory import Inventory
 )
 def main(
     username: str,
-    files: bool,
-    recursive: bool,
+    walk: bool,
     output_format: str,
     rows: int,
     cols: int,
@@ -65,20 +64,20 @@ def main(
     """Octopols - A CLI for listing GitHub repos or files by username, with optional recursion,
     table formatting, and Polars-based filtering.
 
-      By default, rows and cols are unlimited (-1). Use --short/-s to switch to a minimal view.
+      The --walk/-w flag walks the files rather than just listing the repos.
 
       The --filter/-f flag (if provided) applies a Polars expression or DSL expression
       (e.g., '{name}.str.startswith("a")') to the DataFrame of items.
 
-      The --walk/-w flag walks the files rather than just listing the repos.
+      By default, rows and cols are unlimited (-1). Use --short/-s to switch to a minimal view.
 
     Examples
-    --------
+
         octopols lmmx
 
-        octopols lmmx -f '{name}.str.startswith("a")'
+        octopols lmmx -f '{name}.str.starts_with("d")'
 
-        octopols lmmx -w -filter='pl.col("filename").str.contains("test")'
+        octopols lmmx -f '{name}.str.contains("demo")' -w
 
     """
     # Determine table dimensions
@@ -99,7 +98,7 @@ def main(
 
     try:
         # Decide whether to list repos or files, recursively or not
-        if files:
+        if walk:
             items = inventory.walk_file_trees()
         else:
             items = inventory.list_repos()

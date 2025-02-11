@@ -24,7 +24,7 @@ pip install octopols[polars]
 ## Features
 
 - **GitHub repo enumeration**: Retrieve user’s public repos (caching results to speed up repeated calls).
-- **Apply filters**: Use either raw Polars expressions or a shorthand DSL (e.g. `{name}.str.startswith("foo")`) to filter repos.
+- **Apply filters**: Use either raw Polars expressions or a shorthand DSL (e.g. `{name}.str.starts_with("foo")`) to filter repos.
 - **File tree walking**: Enumerate all files in each repository using `fsspec[github]`, supporting recursion and optional size filters.
 - **Output formats**: Display data in a Polars repr table (which can be [read back in](https://docs.pola.rs/api/python/stable/reference/api/polars.from_repr.html))
   or export to CSV/JSON/NDJSON.
@@ -62,11 +62,11 @@ Usage: octopols [OPTIONS] USERNAME
 
     Examples:
 
-      octopols alice
+      octopols lmmx
 
-      octopols alice -f '{name}.str.startswith("a")'
+      octopols lmmx -f '{name}.str.startswith("a")'
 
-      octopols alice -FR --filter='pl.col("filename").str.contains("test")'
+      octopols lmmx -w --filter='pl.col("filename").str.contains("test")'
 
 Options:
   -F, --files               List files (default lists repos).
@@ -117,7 +117,7 @@ shape: (226, 9)
 #### Example 2: Filter Repos by Name
 
 ```bash
-octopols lmmx -f '{name}.str.startswith("d3")'
+octopols lmmx -f '{name}.str.starts_with("d3")'
 ```
 
 Uses the DSL expression to select only repositories whose name starts with “d.”
@@ -137,7 +137,7 @@ shape: (2, 9)
 #### Example 3: Filter Repos by Name, List all Files
 
 ```bash
-octopols lmmx --walk -f '{name}.str.starts_with("d3")'
+octopols lmmx -f '{name}.str.starts_with("d3") --walk'
 ```
 
 Lists *all* files in every repository starting with "d3" owned by "lmmx", as a table of file paths.

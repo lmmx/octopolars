@@ -1,4 +1,3 @@
-```yaml
 ---
 title: "Get Started"
 icon: material/human-greeting
