@@ -54,38 +54,55 @@ octopolars is supported by:
 ```bash
 Usage: octopols [OPTIONS] USERNAME
 
-  octopols - A CLI for listing GitHub repos or files by username, with
-  optional recursion, table formatting, and Polars-based filtering.
+  Octopols - A CLI for listing GitHub repos or files by username, with
+  filters.
 
-    By default, rows and cols are unlimited (-1). Use --short/-s to switch to
-    a minimal view.
+  By default, this prints a table of repositories.
 
-    The --filter/-f flag (if provided) applies a Polars expression or DSL
-    expression   (e.g., '{name}.str.startswith("a")') to the DataFrame of
-    items.
+    The --walk/-w flag walks the files rather than just listing the repos.
 
-    Examples:
+    The --extract/-x flag reads all matching files (use with caution).
 
-      octopols lmmx
+    The --filter/-f flag (if provided) applies a Polars expression, or column
+    DSL that is expanded to one (e.g., '{name}.str.starts_with("a")'), to the
+    DataFrame of repos.
 
-      octopols lmmx -f '{name}.str.startswith("a")'
+    The --short/-s flag switches to a minimal, abridged view. By default, rows
+    and cols are unlimited (-1).
 
-      octopols lmmx -w --filter='pl.col("filename").str.contains("test")'
+  Examples
+
+      - List all repos
+
+          octopols lmmx
+
+      - List all repos that start with 'd'
+
+          octopols lmmx -f '{name}.str.starts_with("d")'
+
+      - List only file paths from matching repos
+
+          octopols lmmx -w --filter='{name} == "myrepo"'
+
+      - Read the *content* of all files from matching repos
+
+          octopols lmmx -x --filter='{name}.str.starts_with("d3")'
 
 Options:
-  -F, --files               List files (default lists repos).
-  -R, --recursive           Recursively list items (repos or files).
+  -w, --walk                Walk files (default lists repos).
+  -x, --extract             Read the text content of each file (not
+                            directories). Use with caution on large sets!
   -o, --output-format TEXT  Output format: table, csv, json, or ndjson.
-  -r, --rows INTEGER        Number of table rows to show. Default -1 means
-                            show all.
   -c, --cols INTEGER        Number of table columns to show. Default -1 means
+                            show all.
+  -r, --rows INTEGER        Number of table rows to show. Default -1 means
                             show all.
   -s, --short               Short mode: overrides --rows and --cols by setting
                             both to None.
   -f, --filter TEXT         A Polars expression or a shorthand DSL expression.
                             In the DSL, use {column} to refer to
                             pl.col('column'), e.g.
-                            '{name}.str.startswith("a")'
+                            '{name}.str.starts_with("a")'.
   --help                    Show this message and exit.
 ```
 
