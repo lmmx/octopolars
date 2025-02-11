@@ -4,7 +4,7 @@
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
 [![PyPI](https://img.shields.io/pypi/v/octopolars.svg)](https://pypi.org/project/octopolars)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/octopolars.svg)](https://pypi.org/project/octopolars)
-[![downloads](https://static.pepy.tech/badge/octopolars/month)](https://pepy.tech/project/octopolars)
+<!-- [![downloads](https://static.pepy.tech/badge/octopolars/month)](https://pepy.tech/project/octopolars) -->
 [![License](https://img.shields.io/pypi/l/octopolars.svg)](https://pypi.python.org/pypi/octopolars)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/lmmx/octopolars/master.svg)](https://results.pre-commit.ci/latest/github/lmmx/octopolars/master)
 
@@ -28,16 +28,6 @@ pip install octopolars
 > pip install octopolars[polars-lts-cpu]
 > ```
 
-## Features
-
-- **GitHub repo enumeration**: Retrieve user’s public repos (caching results to speed up repeated calls).
-- **Apply filters**: Use either raw Polars expressions or a shorthand DSL (e.g. `{name}.str.starts_with("foo")`) to filter repos.
-- **File tree walking**: Enumerate all files in each repository using `fsspec[github]`, supporting recursion and optional size filters.
-- **Output formats**: Display data in a Polars repr table (which can be [read back in](https://docs.pola.rs/api/python/stable/reference/api/polars.from_repr.html))
-  or export to CSV/JSON/NDJSON.
-- **Control table size**: Limit the number of rows or columns displayed, or use `--short` mode to quickly preview data.
-- **Caching**: By default, results are cached in the user’s cache directory to avoid repeated API calls (unless you force refresh).
-
 ### Requirements
 
 - Python 3.9+
@@ -51,6 +41,16 @@ pip install octopolars
 - [PyGithub](https://github.com/PyGithub/PyGithub) (for GitHub API access to enumerate the repos)
 - [fsspec](https://github.com/fsspec/filesystem_spec) within [Universal Pathlib](https://github.com/fsspec/universal_pathlib)
   which provides a `github://` protocol that enables enumerating files in GitHub repos as if they were local file paths.
+
+## Features
+
+- **GitHub repo enumeration**: Retrieve user’s public repos (caching results to speed up repeated calls).
+- **Apply filters**: Use either raw Polars expressions or a shorthand DSL (e.g. `{name}.str.starts_with("foo")`) to filter repos.
+- **File tree walking**: Enumerate all files in each repository using `fsspec[github]`, supporting recursion and optional size filters.
+- **Output formats**: Display data in a Polars repr table (which can be [read back in](https://docs.pola.rs/api/python/stable/reference/api/polars.from_repr.html))
+  or export to CSV/JSON/NDJSON.
+- **Control table size**: Limit the number of rows or columns displayed, or use `--short` mode to quickly preview data.
+- **Caching**: By default, results are cached in the user’s cache directory to avoid repeated API calls (unless you force refresh).
 
 ## Usage
 
