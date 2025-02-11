@@ -52,7 +52,7 @@ from .inventory import Inventory
     help=(
         "A Polars expression or a shorthand DSL expression. "
         "In the DSL, use {column} to refer to pl.col('column'), "
-        """e.g. '{name}.str.startswith("a")'."""
+        """e.g. '{name}.str.starts_with("a")'."""
     ),
 )
 def octopols(
@@ -70,8 +70,8 @@ def octopols(
     By default, this prints a table of repositories.
 
       The --walk/-w flag walks the files rather than just listing the repos.\n
-      The --extract/-x flag reads *all* matching files' content (avoid for large file sets).\n
-      The --filter/-f flag (if provided) applies a Polars expression, or column DSL that is expanded to one (e.g., '{name}.str.startswith("a")'), to the DataFrame of repos.\n
+      The --extract/-x flag reads all matching files (use with caution).\n
+      The --filter/-f flag (if provided) applies a Polars expression, or column DSL that is expanded to one (e.g., '{name}.str.starts_with("a")'), to the DataFrame of repos.\n
       The --short/-s flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
 
     Examples
@@ -82,7 +82,7 @@ def octopols(
 
         - List all repos that start with 'd'
 
-            octopols lmmx -f '{name}.str.startswith("d")'
+            octopols lmmx -f '{name}.str.starts_with("d")'
 
         - List only file paths from matching repos
 
@@ -90,7 +90,7 @@ def octopols(
 
         - Read the *content* of all files from matching repos
 
-            octopols lmmx --read-files --filter='{name}.str.contains("demo")'
+            octopols lmmx -x --filter='{name}.str.starts_with("d3")'
     """
     # Determine table dimensions
     show_tbl_rows = rows
@@ -108,7 +108,7 @@ def octopols(
     )
 
     try:
-        if read_files:
+        if extract:
             # Read all files from each matched repository
             items = inventory.read_files()
         elif walk:

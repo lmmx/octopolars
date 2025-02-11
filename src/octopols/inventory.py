@@ -22,7 +22,7 @@ if ENV_GH_TOKEN is None:
             text=True,
         )
         ENV_GH_TOKEN = tokproc.stdout.strip()
-    except:
+    except Exception:
         print("No token, file listings not available and repo listings rate limited")
         pass
 

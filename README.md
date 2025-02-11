@@ -174,13 +174,13 @@ shape: (121, 4)
 └─────────────────┴─────────────────────────────────┴──────────────┴─────────────────┘
 ```
 
-#### Example 4: Filter Repos by Name, List all Files
+#### Example 4: Filter Repos by Name, List All Files
 
 ```bash
 octopols lmmx -f '{name}.str.starts_with("d3")' --walk
 ```
 
-Lists *all* files in every repository whose (repo) name starts with "d3" owned by "lmmx", as a table of file paths.
+List all files in every repository owned by "lmmx" whose repo name starts with "d3".
 
 ```
 shape: (12, 4)
@@ -202,6 +202,69 @@ shape: (12, 4)
 │ d3-wiring-diagrams ┆ wd_sample_data.json           ┆ false        ┆ 1053            │
 │ d3-wiring-diagrams ┆ wiring-diagram.js             ┆ false        ┆ 7482            │
 └────────────────────┴───────────────────────────────┴──────────────┴─────────────────┘
+```
+
+#### Example 5: Filter Repos by Name, Read All Files
+
+```bash
+octopols lmmx -x --filter='{name}.str.contains("uv")'
+```
+
+Read the content of all files whose repo name starts with "d3" owned by "lmmx".
+
+```
+shape: (28, 4)
+┌─────────────────┬─────────────────────────────────┬─────────────────┬─────────────────────────────────┐
+│ repository_name ┆ file_path                       ┆ file_size_bytes ┆ content                         │
+│ ---             ┆ ---                             ┆ ---             ┆ ---                             │
+│ str             ┆ str                             ┆ i64             ┆ str                             │
+╞═════════════════╪═════════════════════════════════╪═════════════════╪═════════════════════════════════╡
+│ uv-doc-url-demo ┆ .gitignore                      ┆ 8               ┆ /target                         │
+│                 ┆                                 ┆                 ┆                                 │
+│ uv-doc-url-demo ┆ Cargo.lock                      ┆ 90700           ┆ # This file is automatically @… │
+│ uv-doc-url-demo ┆ Cargo.toml                      ┆ 632             ┆ [package]                       │
+│                 ┆                                 ┆                 ┆ name = "uv-doc-url-d…           │
+│ uv-doc-url-demo ┆ README.md                       ┆ 2361            ┆ # uv-doc-url-demo               │
+│                 ┆                                 ┆                 ┆                                 │
+│                 ┆                                 ┆                 ┆ A Rust proo…                    │
+│ uv-doc-url-demo ┆ src                             ┆ 0               ┆                                 │
+│ uv-doc-url-demo ┆ src/main.rs                     ┆ 4067            ┆ use anyhow::Result;             │
+│                 ┆                                 ┆                 ┆ use regex:…                     │
+│ uv-ws-demo      ┆ README.md                       ┆ 827             ┆ # uvws-demo: uv workspaces dem… │
+│ uv-ws-demo      ┆ packages                        ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/bolded                 ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/bolded/README.md       ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/bolded/pyproject.toml  ┆ 240             ┆ [project]                       │
+│                 ┆                                 ┆                 ┆ name = "bolded"                 │
+│                 ┆                                 ┆                 ┆ vers…                           │
+│ uv-ws-demo      ┆ packages/bolded/src             ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/bolded/src/bolded      ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/bolded/src/bolded/__i… ┆ 64              ┆ from .main import make_text_bo… │
+│ uv-ws-demo      ┆ packages/bolded/src/bolded/mai… ┆ 153             ┆ __all__ = ("make_text_bold",)   │
+│                 ┆                                 ┆                 ┆ …                               │
+│ uv-ws-demo      ┆ packages/tpt                    ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/tpt/README.md          ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/tpt/pyproject.toml     ┆ 312             ┆ [project]                       │
+│                 ┆                                 ┆                 ┆ name = "tpt"                    │
+│                 ┆                                 ┆                 ┆ version…                        │
+│ uv-ws-demo      ┆ packages/tpt/src                ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/tpt/src/tpt            ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ packages/tpt/src/tpt/__init__.… ┆ 60              ┆ from .main import two_plus_two… │
+│ uv-ws-demo      ┆ packages/tpt/src/tpt/main.py    ┆ 229             ┆ from bolded import make_text_b… │
+│ uv-ws-demo      ┆ pyproject.toml                  ┆ 508             ┆ [project]                       │
+│                 ┆                                 ┆                 ┆ name = "workspaces"             │
+│                 ┆                                 ┆                 ┆ …                               │
+│ uv-ws-demo      ┆ src                             ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ src/workspaces                  ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ src/workspaces/__init__.py      ┆ 45              ┆ from .cli import greet          │
+│                 ┆                                 ┆                 ┆                                 │
+│                 ┆                                 ┆                 ┆ __all_…                         │
+│ uv-ws-demo      ┆ src/workspaces/cli.py           ┆ 461             ┆ from sys import argv            │
+│                 ┆                                 ┆                 ┆                                 │
+│                 ┆                                 ┆                 ┆ from pyd…                       │
+│ uv-ws-demo      ┆ uv.lock                         ┆ 19814           ┆ version = 1                     │
+│                 ┆                                 ┆                 ┆ requires-python = …             │
+└─────────────────┴─────────────────────────────────┴─────────────────┴─────────────────────────────────┘
 ```
 
 ### Library Usage
