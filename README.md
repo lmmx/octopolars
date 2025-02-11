@@ -309,15 +309,14 @@ files_df = inv.walk_file_trees()
 
 ## Contributing
 
+Maintained by [lmmx](https://github.com/lmmx). Contributions welcome!
+
 1. **Issues & Discussions**: Please open a GitHub issue or discussion for bugs, feature requests, or questions.
 2. **Pull Requests**: PRs are welcome!
-   - Ensure you have [pdm](https://pdm.fming.dev/latest/) installed for local development.
+   - Install the dev extra (e.g. with [uv](https://docs.astral.sh/uv/): `uv pip install -e .[dev]`)
    - Run tests (when available) and include updates to docs or examples if relevant.
+   - If reporting a bug, please include the version and the error message/traceback if available.
 
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-
----
-
-Maintained by [lmmx](https://github.com/lmmx). Contributions welcome!
