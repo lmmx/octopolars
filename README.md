@@ -71,22 +71,23 @@ Usage: octopols [OPTIONS] USERNAME
     and cols are unlimited (-1).
 
   Examples
+  --------
 
-      - List all repos
+  - List all repos
 
-          octopols lmmx
+      octopols lmmx
 
-      - List all repos that start with 'd'
+  - List all repos that start with 'd'
 
-          octopols lmmx -f '{name}.str.starts_with("d")'
+      octopols lmmx -f '{name}.str.starts_with("d")'
 
-      - List only file paths from matching repos
+  - List only file paths from matching repos
 
-          octopols lmmx -w --filter='{name} == "myrepo"'
+      octopols lmmx -w --filter='{name} == "myrepo"'
 
-      - Read the *content* of all files from matching repos
+  - Read the *content* of all files from matching repos
 
-          octopols lmmx -x --filter='{name}.str.starts_with("d3")'
+      octopols lmmx -x --filter='{name}.str.starts_with("d3")'
 
 Options:
   -w, --walk                Walk files (default lists repos).
