@@ -1,4 +1,4 @@
-"""This module provides functionality to retrieve and parse a GitHub user's repositories/files."""
+"""Retrieve and parse a GitHub user's repositories/files."""
 
 from __future__ import annotations
 
@@ -59,8 +59,9 @@ def prepare_expr(expr: str | pl.Expr | None) -> pl.Expr | None:
 
 
 class Inventory:
-    """Provides functionality to retrieve and parse a GitHub user's public repositories
-    into a Polars DataFrame, caching results locally to avoid repeated API calls.
+    """Retrieve and parse a GitHub user's public repositories into a Polars DataFrame.
+
+    Results are cached locally to avoid repeated API calls.
     """
 
     def __init__(

@@ -61,8 +61,7 @@ def octopols(
     short: bool,
     filter_expr: str,
 ) -> None:
-    """octopols - A CLI for listing GitHub repos or files by username, with controls for
-    table formatting, and Polars-based filtering.
+    """Octopols - A CLI for listing GitHub repos or files by username, with filters.
 
       The --walk/-w flag walks the files rather than just listing the repos.
 
