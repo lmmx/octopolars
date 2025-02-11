@@ -141,13 +141,13 @@ shape: (9, 9)
 └──────────────────────────────┴────────────────┴─────────────────────────────────┴──────────┴─────────┴────────┴───────┴───────┴───────┘
 ```
 
-#### Example 3: Walk an entire Repo
+#### Example 3: Walk an Entire Repo
 
 ```bash
 octopols lmmx -f '{name} == "mvdef"' --walk --short
 ```
 
-Lists all files in the repository named "mvdef".
+Lists all files in the repository named "mvdef", abbreviating the output table in 'short' format.
 
 ```
 shape: (121, 4)
