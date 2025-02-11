@@ -1,3 +1,4 @@
+```yaml
 ---
 title: "Get Started"
 icon: material/human-greeting
@@ -7,58 +8,119 @@ icon: material/human-greeting
 
 ## 1. Installation
 
-`page-dewarp` is [on PyPI](https://pypi.org/project/page-dewarp), the Python Package Index. Install with
+`octopolars` is [on PyPI](https://pypi.org/project/octopolars). Install with:
 
 ```bash
-pip install page-dewarp
+pip install octopolars[polars]
 ```
 
-!!! info "Use `uv` for the best developer experience"
-
-    If you set up [uv](https://docs.astral.sh/uv/getting-started/installation/)
-    (recommended) you can install with `uv pip install page-dewarp`
-    or set up a project (e.g. with `uv init --app --package`, `uv venv`, then activate the venv
-    following the instructions it gives) you can add it with `uv add page-dewarp`.
+!!! info "Using `uv` (optional)"
+    If you set up [uv](https://docs.astral.sh/uv/getting-started/installation/) (recommended for a smoother developer experience), you can install with:
+    ```bash
+    uv pip install octopolars[polars]
+    ```
+    or set up a project (e.g., `uv init --app --package`, `uv venv`, then activate the venv), and add `octopolars`:
+    ```bash
+    uv add octopolars[polars]
+    ```
 
 ## 2. Usage
 
-To run `page-dewarp` on a sample image:
-
-page-dewarp input.jpg
-
-This produces a `input_thresh.png` file with a thresholded and dewarped image. If you have multiple
-images:
+`octopolars` provides a CLI tool called `octopols`. To list a user’s GitHub repositories:
 
 ```bash
-page-dewarp image1.jpg image2.jpg
+octopols my-username
 ```
 
-That creates `image1_thresh.png` and `image2_thresh.png`. For more advanced details,
-see the [API Reference](api/index.md).
+To apply filters or walk files instead of list repos, add flags. For example:
+
+```bash
+octopols my-username -w --filter '{name}.str.startswith("d3")'
+```
+
+This will list only files from repositories whose name starts with `"d3"`.
+
+### More CLI Examples
+
+- **List repos with a name filter**:
+  ```bash
+  octopols my-username -f '{name}.str.contains("demo")'
+  ```
+- **List files non-recursively**:
+  ```bash
+  octopols my-username -w
+  ```
+- **List all files, output to CSV**:
+  ```bash
+  octopols my-username -w -output-format csv
+  ```
+  
+For advanced usage like limiting rows/columns, see the [CLI reference](index.md).
 
 ## 3. Local Development
 
-- **Set up dev environment**:
-  1. Clone the repo: `git clone https://github.com/lmmx/page-dewarp.git`
-  2. Install dev dependencies (e.g. via `requirements-dev.txt` or PDM).
-  3. Optionally run `pre-commit install` to enable lint checks before every commit.
+1. **Clone the Repo**:  
+   ```bash
+   git clone https://github.com/lmmx/octopolars.git
+   ```
+2. **Install Dependencies**:  
+   - If you’re using [pdm](https://pdm.fming.dev/latest/):  
+     ```bash
+     pdm install
+     ```  
+   - Otherwise, standard pip:  
+     ```bash
+     pip install -e .
+     ```
+3. **Optional: Pre-commit Hooks**:  
+   ```bash
+   pre-commit install
+   ```
+   This automatically runs lint checks (e.g., black, flake8) before each commit.
 
-- **Test**:
-  Run `pytest` (or `pdm run pytest`) to confirm everything works.
-
-- **Build docs**:
-  `mkdocs build` or `mkdocs serve` to view them locally, then `mkdocs gh-deploy` for GitHub Pages.
+4. **Run Tests** (if applicable):  
+   ```bash
+   pytest
+   ```
+5. **Build/Serve Docs** (if included):  
+   ```bash
+   mkdocs serve
+   ```
+   Then visit the local server link. Use `mkdocs gh-deploy` to publish on GitHub Pages.
 
 ## 4. Example Workflow
 
-1. Place one or more `.jpg` or `.png` files in a directory.
-2. Run `page-dewarp myscan.jpg`.
-3. A `_thresh.png` file is generated with the warped page corrected.
-4. If you want a PDF, try `page-dewarp -p *.jpg`, though it currently prints instructions for
-   ImageMagick conversion.
+1. **List Repositories**:  
+   ```bash
+   octopols octo-user
+   ```
+2. **Apply a Filter**:  
+   ```bash
+   octopols octo-user --filter='{name}.str.startswith("demo")'
+   ```
+3. **Switch to Files**:  
+   ```bash
+   octopols octo-user --walk
+   ```
+4. **Combine Steps**:  
+   ```bash
+   octopols octo-user -F --filter='pl.col("file_path").str.contains(".md")'
+   ```
+   This filters file trees in each repository for Markdown files.
 
 ## 5. Configuration
 
-`page-dewarp` uses a global config object (`cfg` in `options/core.py`) for parameters like
-`DEBUG_LEVEL`, `FOCAL_LENGTH`, or `REMAP_DECIMATE`. You can override them via CLI flags or by
-editing `cfg`. See [CLI Usage](index.md) for argument specifics.
+`octopolars` primarily relies on:
+- **`GITHUB_TOKEN`**: Recommended to avoid low rate limits, if not set it will try to use [`gh`][gh].
+- **Caching**: By default, it caches your repos in a user-specific cache directory.  
+- **CLI Flags**: Control recursion, output format, table dimensions, and more via flags:
+  - `--rows`, `--cols`, `--short`: Manage table display size.  
+  - `--filter`: Apply a Polars-based filter or DSL expression.  
+
+[gh]: https://cli.github.com/
+
+For further details, consult the [API Reference](api/index.md) or the help text:
+
+```bash
+octopols --help
+```

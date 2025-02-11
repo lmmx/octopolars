@@ -13,7 +13,7 @@
 ## Features
 
 - **GitHub Repo Enumeration**: Retrieve user’s public repos (caching results to speed up repeated calls).  
-- **File Tree Listing**: Enumerate files in each repository using `fsspec[github]`, supporting recursion and optional size filters.  
+- **File Tree Walking**: Enumerate files in each repository using `fsspec[github]`, supporting recursion and optional size filters.  
 - **Polars-Based Filtering**: Apply complex queries (`pl.col("name").str.contains("test")`) or simpler DSL expressions (`'{name}.str.startswith("a")'`).  
 - **Flexible Output**: Display data in a pretty table (Polars-style) or export to CSV/JSON/NDJSON.  
 - **Caching**: By default, results are cached in the user’s cache directory to avoid repeated API calls (unless you force refresh).  
@@ -44,8 +44,7 @@ octopols [OPTIONS] USERNAME
 
 **Options:**
 
-- `-F, --files`: List files instead of repos.  
-- `-R, --recursive`: Recursively list items (applies to files if `--files` is set).  
+- `-w, --walk`: Walk files instead of list repos.  
 - `-o, --output-format {table,csv,json,ndjson}`: Control output format (default: table).  
 - `-r, --rows <INT>` / `-c, --cols <INT>`: Limit how many rows/columns to show (default: -1 means unlimited).  
 - `-s, --short`: Override rows/cols limits by setting both to `None` for a concise preview.  
@@ -59,7 +58,7 @@ octopols lmmx --short
 
 Displays a table of all repositories belonging to "lmmx" in short format.
 
-```py
+```
 shape: (226, 9)
 ┌────────────────────────┬────────────────┬─────────────────────────────────┬──────────┬───┬────────┬───────┬───────┬───────┐
 │ name                   ┆ default_branch ┆ description                     ┆ archived ┆ … ┆ issues ┆ stars ┆ forks ┆ size  │
@@ -88,7 +87,7 @@ octopols lmmx -f '{name}.str.startswith("d3")'
 
 Uses the DSL expression to select only repositories whose name starts with “d.”
 
-```py
+```
 shape: (2, 9)
 ┌────────────────────┬────────────────┬─────────────────────────────────┬──────────┬─────────┬────────┬───────┬───────┬──────┐
 │ name               ┆ default_branch ┆ description                     ┆ archived ┆ is_fork ┆ issues ┆ stars ┆ forks ┆ size │
@@ -103,12 +102,12 @@ shape: (2, 9)
 #### Example 3: Filter Repos by Name, List all Files
 
 ```bash
-octopols lmmx -f '{name}.str.starts_with("d3")' --files
+octopols lmmx --walk -f '{name}.str.starts_with("d3")'
 ```
 
 Lists *all* files in every repository starting with "d3" owned by "lmmx", as a table of file paths.
 
-```py
+```
 shape: (12, 4)
 ┌────────────────────┬───────────────────────────────┬──────────────┬─────────────────┐
 │ repository_name    ┆ file_path                     ┆ is_directory ┆ file_size_bytes │

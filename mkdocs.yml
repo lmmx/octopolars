@@ -2,9 +2,9 @@ site_name: Page Dewarp
 site_author: Louis Maddox
 site_description: >-
   Document image dewarping library using a cubic sheet model
-site_url: https://page-dewarp.vercel.app
-repo_name: lmmx/page-dewarp
-repo_url: https://github.com/lmmx/page-dewarp
+site_url: https://octopolars.vercel.app
+repo_name: lmmx/octopolars
+repo_url: https://github.com/lmmx/octopolars
 strict: true
 watch: [src]
 
@@ -105,22 +105,4 @@ nav:
   # - Changelog: changelog.md
   - API Reference:
       - api/index.md
-      - "check_version": api/check_version.md
-      - "cli": api/cli.md
-      - "colours": api/colours.md
-      - "contours": api/contours.md
-      - "core": api/core.md
-      - "dewarp": api/dewarp.md
-      - "image": api/image.md
-      - "k_opt": api/k_opt.md
-      - "keypoints": api/keypoints.md
-      - "mask": api/mask.md
-      - "normalisation": api/normalisation.md
-      - "optimise": api/optimise.md
-      - "pdf": api/pdf.md
-      - "projection": api/projection.md
-      - "simple_utils": api/simple_utils.md
-      - "snoopy": api/snoopy.md
-      - "solve": api/solve.md
-      - "spans": api/spans.md
-      - "viewer": api/viewer.md
+      - "inventory": api/inventory.md

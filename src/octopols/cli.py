@@ -9,10 +9,10 @@ from .inventory import Inventory
 
 @click.command()
 @click.argument("username", type=str)
-@click.option("-F", "--files", is_flag=True, help="List files (default lists repos).")
-@click.option(
-    "-R", "--recursive", is_flag=True, help="Recursively list items (repos or files)."
-)
+@click.option("-w", "--walk", is_flag=True, help="Walk files (default lists repos).")
+# @click.option(
+#     "-R", "--recursive", is_flag=True, help="Recursively list items (repos or files)."
+# )
 @click.option(
     "-o",
     "--output-format",
@@ -69,13 +69,15 @@ def main(
       The --filter/-f flag (if provided) applies a Polars expression or DSL expression
       (e.g., '{name}.str.startswith("a")') to the DataFrame of items.
 
+      The --walk/-w flag walks the files rather than just listing the repos.
+
       Examples:
 
-        octopols alice
+        octopols lmmx
 
-        octopols alice -f '{name}.str.startswith("a")'
+        octopols lmmx -f '{name}.str.startswith("a")'
 
-        octopols alice -FR --filter='pl.col("filename").str.contains("test")'
+        octopols lmmx -w -filter='pl.col("filename").str.contains("test")'
     """
 
     # Determine table dimensions
