@@ -1,3 +1,5 @@
+"""This module provides the CLI command for Octopols."""
+
 from __future__ import annotations
 
 import sys

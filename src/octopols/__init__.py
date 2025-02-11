@@ -1,3 +1,5 @@
+"""The octopols package provides the Inventory class for GitHub repository and file listings."""
+
 from .inventory import Inventory
 
 
