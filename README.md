@@ -1,8 +1,8 @@
-# octopols
+# octopolars
 
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
-[![PyPI](https://img.shields.io/pypi/v/octopolars.svg)](https://pypi.org/projects/octopolars)
+[![PyPI](https://img.shields.io/pypi/v/octopolars.svg)](https://pypi.org/project/octopolars)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/octopolars.svg)](https://pypi.org/project/octopolars)
 [![downloads](https://static.pepy.tech/badge/octopolars/month)](https://pepy.tech/project/octopolars)
 [![License](https://img.shields.io/pypi/l/octopolars.svg)](https://pypi.python.org/pypi/octopolars)
@@ -13,12 +13,19 @@ Pull, filter, and walk a GitHub user's repositories with Polars.
 ## Installation
 
 ```bash
-pip install octopols[polars]
+pip install octopolars
 ```
 
+> The `polars` dependency is required but not included in the package by default.
+> It is shipped as an optional extra which can be activated by passing it in square brackets:
+>
+> ```bash
+> pip install octopolars[polars]
+> ```
+>
 > If you need compatibility with older CPUs, install:
 > ```bash
-> pip install octopols[polars-lts-cpu]
+> pip install octopolars[polars-lts-cpu]
 > ```
 
 ## Features
@@ -34,9 +41,11 @@ pip install octopols[polars]
 ### Requirements
 
 - Python 3.9+
-- A GitHub token in your environment (either via `$GITHUB_TOKEN` or by configuring [gh](https://cli.github.com/)) to avoid rate limits and enable file listings.
+- [gh](https://cli.github.com/) GitHub CLI tool, for a [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+  to avoid rate limits and enable file listings.
+  - **alternatively** set the `GITHUB_TOKEN` environment variable as your GitHub token.
 
-`octopols` is supported by these tools:
+`octopolars` is supported by these tools:
 
 - [Polars](https://www.pola.rs/) for efficient data filtering and output formatting.
 - [PyGithub](https://github.com/PyGithub/PyGithub) (for GitHub API access to enumerate the repos)
