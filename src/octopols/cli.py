@@ -22,18 +22,18 @@ from .inventory import Inventory
     help="Output format: table, csv, json, or ndjson.",
 )
 @click.option(
-    "-r",
-    "--rows",
-    default=-1,
-    type=int,
-    help="Number of table rows to show. Default -1 means show all.",
-)
-@click.option(
     "-c",
     "--cols",
     default=-1,
     type=int,
     help="Number of table columns to show. Default -1 means show all.",
+)
+@click.option(
+    "-r",
+    "--rows",
+    default=-1,
+    type=int,
+    help="Number of table rows to show. Default -1 means show all.",
 )
 @click.option(
     "-s",

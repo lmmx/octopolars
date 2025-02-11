@@ -48,16 +48,42 @@ pip install octopols[polars]
 ### Command-Line Interface
 
 ```bash
-octopols [OPTIONS] USERNAME
+Usage: octopols [OPTIONS] USERNAME
+
+  octopols - A CLI for listing GitHub repos or files by username, with
+  optional recursion, table formatting, and Polars-based filtering.
+
+    By default, rows and cols are unlimited (-1). Use --short/-s to switch to
+    a minimal view.
+
+    The --filter/-f flag (if provided) applies a Polars expression or DSL
+    expression   (e.g., '{name}.str.startswith("a")') to the DataFrame of
+    items.
+
+    Examples:
+
+      octopols alice
+
+      octopols alice -f '{name}.str.startswith("a")'
+
+      octopols alice -FR --filter='pl.col("filename").str.contains("test")'
+
+Options:
+  -F, --files               List files (default lists repos).
+  -R, --recursive           Recursively list items (repos or files).
+  -o, --output-format TEXT  Output format: table, csv, json, or ndjson.
+  -r, --rows INTEGER        Number of table rows to show. Default -1 means
+                            show all.
+  -c, --cols INTEGER        Number of table columns to show. Default -1 means
+                            show all.
+  -s, --short               Short mode: overrides --rows and --cols by setting
+                            both to None.
+  -f, --filter TEXT         A Polars expression or a shorthand DSL expression.
+                            In the DSL, use {column} to refer to
+                            pl.col('column'), e.g.
+                            '{name}.str.startswith("a")'
+  --help                    Show this message and exit.
 ```
-
-**Options:**
-
-- `-w, --walk`: Walk files instead of list repos.
-- `-o, --output-format {table,csv,json,ndjson}`: Control output format (default: table).
-- `-r, --rows <INT>` / `-c, --cols <INT>`: Limit how many rows/columns to show (default: -1 means unlimited).
-- `-s, --short`: Override rows/cols limits by setting both to `None` for a concise preview.
-- `-f, --filter <EXPR>`: A Polars expression or DSL expression to filter the DataFrame.
 
 #### Example 1: List All Repos for a User
 
