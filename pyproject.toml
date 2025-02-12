@@ -44,7 +44,7 @@ license = {text = "MIT"}
 name = "octopolars"
 readme = "README.md"
 requires-python = ">=3.11"
-version = "0.2.6"
+version = "0.3.0"
 
 [project.optional-dependencies]
 dev = [
