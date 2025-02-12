@@ -301,7 +301,7 @@ If you want to apply a filter expression programmatically and walk the file tree
 ```python
 import polars as pl
 
-inv = Inventory(username="lmmx", repo_filter=pl.col("name").str.contains("demo"))
+inv = Inventory(username="lmmx", filter_exprs=[pl.col("name").str.contains("demo")])
 files_df = inv.walk_file_trees()
 ```
 

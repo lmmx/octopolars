@@ -72,8 +72,8 @@ class Inventory:
         token: str | None = None,
         use_cache: bool = True,
         force_refresh: bool = False,
-        filter_exprs: tuple[str, ...] | tuple[pl.Expr, ...] | None = None,
-        select_exprs: tuple[str, ...] | tuple[pl.Expr, ...] | None = None,
+        filter_exprs: tuple[str, ...] | tuple[pl.Expr, ...] = None,
+        select_exprs: tuple[str, ...] | tuple[pl.Expr, ...] = None,
         show_tbl_cols: int | None = None,
         show_tbl_rows: int | None = None,
     ) -> None:
@@ -99,8 +99,8 @@ class Inventory:
         self.token = token if token is not None else ENV_GH_TOKEN
         self.use_cache = use_cache
         self.force_refresh = force_refresh
-        self.filter_exprs = [prepare_expr(expr) for expr in filter_exprs or [] if expr]
-        self.select_exprs = [prepare_expr(expr) for expr in select_exprs or [] if expr]
+        self.filter_exprs = tuple(map(prepare_expr, filter_exprs or []))
+        self.select_exprs = tuple(map(prepare_expr, select_exprs or []))
         self._inventory_df: pl.DataFrame | None = None
 
         # Initialize the cache location
@@ -159,7 +159,7 @@ class Inventory:
 
         repos.hopper.add_filters(*self.filter_exprs)
         repos = repos.hopper.apply_ready_filters()
-        self.filter_exprs = repos.hopper.list_filters()
+        self.filter_exprs = tuple(repos.hopper.list_filters())
         return repos
 
     def _fetch_from_github(self) -> pl.DataFrame:
