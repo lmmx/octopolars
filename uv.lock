@@ -326,6 +326,36 @@ wheels = [
 ]
 
 [[package]]
+name = "dulwich"
+version = "0.22.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "urllib3" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/67/57/b4962be0410cf15dc7758fcc40337d09515cc74ac15e45d304f8b70c9b40/dulwich-0.22.7.tar.gz", hash = "sha256:d53935832dd182d4c1415042187093efcee988af5cd397fb1f394f5bb27f0707", size = 452893 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e5/93/f6b50eeff44877622964e9b32daf5610f84b6bbc5f2d62e655ad8b5ef03c/dulwich-0.22.7-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:df5a179e5d95ac0263b5e0ccd53311eac486091979dcac106c5cc9e0ee4f2aa2", size = 896831 },
+    { url = "https://files.pythonhosted.org/packages/b4/7b/e9bd9c32f195c816aaecd4e813a85bf7e5076c781a936cd0afaf1cfd11cc/dulwich-0.22.7-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ca7ed207956001e6a8a2e3f319cdc37591e53f7eb04aedafa78f96768048c53e", size = 971218 },
+    { url = "https://files.pythonhosted.org/packages/2d/3f/a1d68a681ecefc7e152fa43f50b49457aebd9fb2bbf3fcd491bc782a3de7/dulwich-0.22.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:052715452b729544c611a107b2eef6111e527f041c1b666f8ed36c04e39c36b5", size = 979709 },
+    { url = "https://files.pythonhosted.org/packages/8e/98/9e60a76c629c2b034d4e6417f34bfc12ab142cdda9b29368a111cac05c7b/dulwich-0.22.7-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:74b7cf6f0d46ac777be617dad7c1b992380004de74c0e0652bed174686249f34", size = 1024998 },
+    { url = "https://files.pythonhosted.org/packages/6a/fc/2d71a0696141af7e23b3bab2d51fcb905651884da88627d707aab6e30b8c/dulwich-0.22.7-cp311-cp311-win32.whl", hash = "sha256:5b9806a75f4b74fa891926b1d830e21f9cead80ed6dd803ed668369b26fb8b5f", size = 582239 },
+    { url = "https://files.pythonhosted.org/packages/2a/c9/33af07981b6d2bcaed941a4f8d5bffc44ed618db92a7ec1146e9ee9f5e7c/dulwich-0.22.7-cp311-cp311-win_amd64.whl", hash = "sha256:01544915c4056d0820de8cf126b971f7c180743ff64c4435c89168e44b30df4b", size = 599143 },
+    { url = "https://files.pythonhosted.org/packages/1e/ba/81c17cc324fe60e81edc343b7d818f3b1489060eec1260dcac6284b20984/dulwich-0.22.7-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:2b7a3ac4baa49bd988cc0d0891a93aa26307c01f35caeed8729b7928a1f483af", size = 889792 },
+    { url = "https://files.pythonhosted.org/packages/60/e4/3b5885e0503869c515c9c8c7760f125d8681e7581dbe82321e6ce9916097/dulwich-0.22.7-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7d72ce1377eac23bd77aa3541ceb91f2d8bd68687659f8625af8301f0b6b0a63", size = 969313 },
+    { url = "https://files.pythonhosted.org/packages/72/5a/73c7e9b9845ff351ceade642b16410e573eaef0647fe917feb5c8457b780/dulwich-0.22.7-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6bda2eca0847c30a9312a72f219af9e63feb7d2ca89f47fdaa240b0d0cdd6b84", size = 976951 },
+    { url = "https://files.pythonhosted.org/packages/f8/4d/c7e43521402d12e6ec3914a117672111b27a00bf9b1a6f2662b9b3c4a3c4/dulwich-0.22.7-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:a8886b2c9750ba15193356d9e8608e031cd89a780d0afc53b3101391605b3793", size = 1021693 },
+    { url = "https://files.pythonhosted.org/packages/ab/dd/00db3b53e2099aea4ec8f2aa028d6f80d2645dbd5fd41beb1151e68baf6a/dulwich-0.22.7-cp312-cp312-win32.whl", hash = "sha256:1782854c10878b5cb8423e74b0ef4256c3667f7b0266513af028ac28dbab1f2d", size = 580960 },
+    { url = "https://files.pythonhosted.org/packages/5e/2d/f4d333aabba22dac0fa3985c77fcdd982e30b1fe255c79770a426d38ffd7/dulwich-0.22.7-cp312-cp312-win_amd64.whl", hash = "sha256:fe324dc40b93e8be996c9fa9291a439bef835a92a2e4cb5c8cbdb1171c168fd6", size = 599033 },
+    { url = "https://files.pythonhosted.org/packages/29/90/49577568ae5c57476df62622c765d3a3f59abd31a950f806cda677971fc3/dulwich-0.22.7-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:2220c8b7cac5794e2260a924e81b05baa7836c18ba805d5a6731071a5ff6b860", size = 889780 },
+    { url = "https://files.pythonhosted.org/packages/3a/ce/046edaba0439646cad017c5e6ad7cdb81dbb98622a2f8f5ff501e8d628fd/dulwich-0.22.7-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1cbd5ecbc95e18c745965fc7b2b71209443987a99e499c7bb074234d7c6142e2", size = 969356 },
+    { url = "https://files.pythonhosted.org/packages/da/ac/7b60ccbf6259545ddc387d6c92844cb5f9d3b9a2a257955318c214cc2542/dulwich-0.22.7-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9f418779837a3249b7dfc4b3dc7266fa40687e5f0249eedfa7185560ba1ee148", size = 977362 },
+    { url = "https://files.pythonhosted.org/packages/fa/3e/38cb8c9d116258f306c8bc89dda99b61fe004d7e2211d7e71e895216e33e/dulwich-0.22.7-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:9c01db2ef6d5f5b9192c0011624701b0de328868fe0c32601368cd337e77cd1a", size = 1021409 },
+    { url = "https://files.pythonhosted.org/packages/46/8c/3e80ce97d60a4c2848b390a36ec0c9abed34cf7920bd157a5c5ee58e957d/dulwich-0.22.7-cp313-cp313-win32.whl", hash = "sha256:a64e61fa6ab60db0f897f1c30f32b26b330d3a9dc264f089ee9c44f5900fb657", size = 580586 },
+    { url = "https://files.pythonhosted.org/packages/fb/5a/cd0d02c98a3a4c5910eee76d3d3735a61f34341f620d8ae303050283c28a/dulwich-0.22.7-cp313-cp313-win_amd64.whl", hash = "sha256:9f5954cd491313743d7bd3623d323b72afceb83d2c2a47921f621bdd9d4c615b", size = 598799 },
+    { url = "https://files.pythonhosted.org/packages/3b/d3/375c175ffdf4e0adf1cac737f79cbe1abe933862a3e54796cdba41fa4fd3/dulwich-0.22.7-py3-none-any.whl", hash = "sha256:10c5ee20430714ea6a79dde22c1f77078848930d27021aa810204738bc175e95", size = 265745 },
+]
+
+[[package]]
 name = "filelock"
 version = "3.17.0"
 source = { registry = "https://pypi.org/simple" }
@@ -888,12 +918,14 @@ wheels = [
 
 [[package]]
 name = "octopolars"
-version = "0.1.0"
+version = "0.2.6"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
+    { name = "dulwich" },
     { name = "fsspec", extra = ["github"] },
     { name = "platformdirs" },
+    { name = "polars-expr-hopper" },
     { name = "pygithub" },
     { name = "requests" },
     { name = "universal-pathlib" },
@@ -926,6 +958,7 @@ polars-lts-cpu = [
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.1.8" },
+    { name = "dulwich", specifier = ">=0.22.7" },
     { name = "fsspec", extras = ["github"], specifier = ">=2025.2.0" },
     { name = "livereload", marker = "extra == 'docs'", specifier = ">=2.7.1" },
     { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.5.3" },
@@ -937,6 +970,7 @@ requires-dist = [
     { name = "pdm-bump", marker = "extra == 'dev'", specifier = ">=0.9.10" },
     { name = "platformdirs", specifier = ">=4.3.6" },
     { name = "polars", marker = "extra == 'polars'", specifier = ">=1.21.0" },
+    { name = "polars-expr-hopper", specifier = ">=0.2.0" },
     { name = "polars-lts-cpu", marker = "extra == 'polars-lts-cpu'", specifier = ">=1.21.0" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=4.1.0" },
     { name = "pygithub", specifier = ">=2.5.0" },
@@ -1115,6 +1149,27 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/a2/ae/c014bcb259757acd9081b4db76d19157c8978cb6eeb864f80ac0544e85cd/polars-1.22.0-cp39-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:729e6be8a884812a206518195a2fb407b61962323886095ede1a2a934cdb1410", size = 30165643 },
     { url = "https://files.pythonhosted.org/packages/82/ef/2a13676be0f0cfa23f1899855d8342b303cc46111126b770cdacc7fd804d/polars-1.22.0-cp39-abi3-win_amd64.whl", hash = "sha256:78b8bcd1735e9376815d117aeae49391441b2199b5a70a300669d692b34ec713", size = 33179742 },
     { url = "https://files.pythonhosted.org/packages/79/ae/f46ff902e5ad0d3ce377902ae8ff65eaac23d9aba3c6bcb3b38ce22f5544/polars-1.22.0-cp39-abi3-win_arm64.whl", hash = "sha256:cde8f56c408151ab9790c43485b90f690d5c198ce26ab38a845045c73c999325", size = 29458831 },
+]
+
+[[package]]
+name = "polars-config-meta"
+version = "0.1.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/b5/e9fd2704c0e5aed64cd8d6c92b0a6972045a5e7108facb33d6bb667b91c7/polars_config_meta-0.1.3.tar.gz", hash = "sha256:6c8dea9c77b82e6a05b2ae2b82277a315ddb0ab6e1e9296e8e18e5611170146c", size = 6725 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3d/32/d77864a4ec2f94a6bb9f41dd78f5152bed98f983a170d87514c9db70bd66/polars_config_meta-0.1.3-py3-none-any.whl", hash = "sha256:fb398a9f0be50859f19f9e732385049f62f9723e0d14b12d30f518da0e3c567a", size = 6328 },
+]
+
+[[package]]
+name = "polars-expr-hopper"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "polars-config-meta" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/39/f2/5930e2a935c382f412bf52dddbc95a12214e976a5af4f62d7da897e59f84/polars_expr_hopper-0.2.0.tar.gz", hash = "sha256:af8ac1a91811a9ab57cdb690378ac20a214abf31a9b7f0987755cf5a886eea13", size = 11940 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/65/fe/1d72f4750e7cdaa7c8009c6770bf2d61e7d0a09612926fea10c435b922e8/polars_expr_hopper-0.2.0-py3-none-any.whl", hash = "sha256:3d0e20e241e1d1e3c9b7e07bdb3182506df10c16eb7bcaf0e2b4635e9cbd97f0", size = 7935 },
 ]
 
 [[package]]

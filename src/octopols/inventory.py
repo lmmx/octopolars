@@ -8,12 +8,13 @@ import subprocess
 from pathlib import Path
 
 import polars as pl
+import polars_hopper  # noqa: F401
 from github import Github
 from platformdirs import user_cache_dir
 from upath import UPath
 
 
-ENV_GH_TOKEN = os.getenv("GITHUB_TOKEN")
+ENV_GH_TOKEN = os.getenv("GH_TOKEN")
 if ENV_GH_TOKEN is None:
     try:
         tokproc = subprocess.run(
@@ -71,8 +72,8 @@ class Inventory:
         token: str | None = None,
         use_cache: bool = True,
         force_refresh: bool = False,
-        repo_filter: str | pl.Expr | None = None,
-        tree_filter: str | pl.Expr | None = None,
+        filter_exprs: tuple[str, ...] | tuple[pl.Expr, ...] | None = None,
+        select_exprs: tuple[str, ...] | tuple[pl.Expr, ...] | None = None,
         show_tbl_cols: int | None = None,
         show_tbl_rows: int | None = None,
     ) -> None:
@@ -85,10 +86,10 @@ class Inventory:
             token: An optional GitHub personal access token for higher rate limits.
             use_cache: Whether to use cached results if available.
             force_refresh: If True, always refetch from GitHub and overwrite the cache.
-            repo_filter: Either a Polars schema (column) name to filter (where True),
-                         or an Expr to filter the repository listing in `list_repos`.
-            tree_filter: Either a Polars schema (column) name to filter (where True),
-                         or an Expr to filter the repository tree in `walk_file_trees`.
+            filter_exprs: One or more Polars schema (column) names to filter (where True),
+                          or an Expr to filter the repository listing or file walk tree.
+            select_exprs: One or more Polars schema (column) names to select, or an
+                          Expr to evaluate for the repository listing or file walk tree.
             show_tbl_cols: Configure Polars to print N columns if `int` (default: None).
             show_tbl_rows: Configure Polars to print N rows if `int` (default: None).
 
@@ -98,8 +99,8 @@ class Inventory:
         self.token = token if token is not None else ENV_GH_TOKEN
         self.use_cache = use_cache
         self.force_refresh = force_refresh
-        self.repo_filter = prepare_expr(repo_filter)
-        self.tree_filter = prepare_expr(tree_filter)
+        self.filter_exprs = [prepare_expr(expr) for expr in filter_exprs or [] if expr]
+        self.select_exprs = [prepare_expr(expr) for expr in select_exprs or [] if expr]
         self._inventory_df: pl.DataFrame | None = None
 
         # Initialize the cache location
@@ -156,7 +157,9 @@ class Inventory:
                 else:
                     raise
 
-        repos = repos.filter(True if self.repo_filter is None else self.repo_filter)
+        repos.hopper.add_filters(*self.filter_exprs)
+        repos = repos.hopper.apply_ready_filters()
+        self.filter_exprs = repos.hopper.list_filters()
         return repos
 
     def _fetch_from_github(self) -> pl.DataFrame:

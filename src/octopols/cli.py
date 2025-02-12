@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-
 import click
 
 from .inventory import Inventory
@@ -18,7 +16,7 @@ from .inventory import Inventory
 
       The --extract/-x flag reads all matching files (use with caution).
 
-      The --filter/-f flag (if provided) applies a Polars expression, or column DSL that is expanded to one (e.g., '{name}.str.starts_with("a")'), to the DataFrame of repos.
+      The --filter/-f flag (if provided) applies 1+ Polars expressions, or f-string-like column DSL that is expanded to them (e.g., '{name}.str.starts_with("a")'), to the DataFrame of repos.
 
       The --short/-s flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
 
@@ -80,10 +78,12 @@ from .inventory import Inventory
 @click.option(
     "--filter",
     "-f",
-    "filter_expr",
+    "filter_exprs",
     default=None,
+    type=str,
+    multiple=True,
     help=(
-        "A Polars expression or a shorthand DSL expression. "
+        "One or more Polars expressions or a shorthand DSL expression. "
         "In the DSL, use {column} to refer to pl.col('column'), "
         """e.g. '{name}.str.starts_with("a")'."""
     ),
@@ -96,7 +96,7 @@ def octopols(
     rows: int,
     cols: int,
     short: bool,
-    filter_expr: str,
+    filter_exprs: tuple[str, ...] | None,
 ) -> None:
     """CLI to print a user's repo listings, with options to walk and read files."""
     # Determine table dimensions
@@ -111,7 +111,7 @@ def octopols(
         username=username,
         show_tbl_rows=show_tbl_rows,
         show_tbl_cols=show_tbl_cols,
-        repo_filter=filter_expr,
+        filter_exprs=filter_exprs,
     )
 
     try:
@@ -125,8 +125,11 @@ def octopols(
             # Default: list repositories
             items = inventory.list_repos()
     except Exception as exc:
-        click.echo(f"Error: {exc}", err=True)
-        sys.exit(1)
+        import traceback
+
+        click.echo(click.style(traceback.format_exc(), fg="red"))
+        click.echo(f"An error occurred: {exc}", err=True)
+        raise SystemExit(1)
 
     # Output in the requested format
     if output_format == "csv":

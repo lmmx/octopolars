@@ -110,7 +110,7 @@ For advanced usage like limiting rows/columns, see the [CLI reference](index.md)
 ## 5. Configuration
 
 `octopolars` primarily relies on:
-- **`GITHUB_TOKEN`**: Recommended to avoid low rate limits, if not set it will try to use [`gh`][gh].
+- **`GH_TOKEN`**: Recommended to avoid low rate limits, or else requires [`gh`][gh] to be installed.
 - **Caching**: By default, it caches your repos in a user-specific cache directory.
 - **CLI Flags**: Control recursion, output format, table dimensions, and more via flags:
   - `--rows`, `--cols`, `--short`: Manage table display size.
