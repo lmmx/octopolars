@@ -280,7 +280,7 @@ class Inventory:
                         "file_size_bytes": file_size_bytes,
                     },
                 )
-        return pl.DataFrame(
+        files = pl.DataFrame(
             records,
             schema={
                 "repository_name": pl.String,
@@ -289,6 +289,10 @@ class Inventory:
                 "file_size_bytes": pl.Int64,
             },
         )
+        files.hopper.add_filters(*self.filter_exprs)
+        files = files.hopper.apply_ready_filters()
+        self.filter_exprs = tuple(files.hopper.list_filters())
+        return files
 
     def read_files(
         self,
