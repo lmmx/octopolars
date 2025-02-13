@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 
 import polars as pl
+import polars.selectors as cs  # noqa: F401
 import polars_hopper  # noqa: F401
 from github import Github
 from platformdirs import user_cache_dir
