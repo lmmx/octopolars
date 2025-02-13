@@ -44,7 +44,7 @@ octopolars is supported by:
 - **File tree walking**: Enumerate all files in each repository using `fsspec[github]`, supporting recursion and optional size filters.
 - **Output formats**: Display data in a Polars repr table (which can be [read back in](https://docs.pola.rs/api/python/stable/reference/api/polars.from_repr.html))
   or export to CSV/JSON/NDJSON.
-- **Control table size**: Limit the number of rows or columns displayed, or use `--short` mode to quickly preview data.
+- **Control table size**: Limit the number of rows or columns displayed, or use `--abridged` mode to quickly preview data.
 - **Caching**: By default, results are cached in the user’s cache directory to avoid repeated API calls (unless you force refresh).
 
 ## Usage
@@ -67,7 +67,7 @@ Usage: octopols [OPTIONS] USERNAME
     DSL that is expanded to one (e.g., '{name}.str.starts_with("a")'), to the
     DataFrame of repos.
 
-    The --short/-s flag switches to a minimal, abridged view. By default, rows
+    The --abridged/-a flag switches to a minimal, abridged view. By default, rows
     and cols are unlimited (-1).
 
   Examples
@@ -98,7 +98,7 @@ Options:
                             show all.
   -r, --rows INTEGER        Number of table rows to show. Default -1 means
                             show all.
-  -s, --short               Short mode: overrides --rows and --cols by setting
+  -a, --abridged            Abridged mode: overrides --rows and --cols by setting
                             both to None.
   -f, --filter TEXT         A Polars expression or a shorthand DSL expression.
                             In the DSL, use {column} to refer to
@@ -110,10 +110,10 @@ Options:
 #### Example 1: List All Repos for a User
 
 ```bash
-octopols lmmx --short
+octopols lmmx --abridged
 ```
 
-Displays a table of all repositories belonging to "lmmx" in short format.
+Displays a table of all repositories belonging to "lmmx" in abridged format.
 
 ```
 shape: (226, 9)
@@ -166,10 +166,10 @@ shape: (9, 9)
 #### Example 3: Walk an Entire Repo
 
 ```bash
-octopols lmmx -f '{name} == "mvdef"' --walk --short
+octopols lmmx -f '{name} == "mvdef"' --walk --abridged
 ```
 
-Lists all files in the repository named "mvdef", abbreviating the output table in 'short' format.
+Lists all files in the repository named "mvdef", abbreviating the output table in 'abridged' format.
 
 ```
 shape: (121, 4)

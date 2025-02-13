@@ -30,12 +30,12 @@ if ENV_GH_TOKEN is None:
 dsl_pattern = re.compile(r"\{(\w+)\}")
 
 
-def expand_short_filter(filter_expr: str) -> str:
+def expand_short_expr(expr: str) -> str:
     """Convert DSL tokens like '{name}' into 'pl.col("name")' for Polars expressions.
 
     Example: '{name}.str.startswith("a")' -> 'pl.col("name").str.startswith("a")'.
     """
-    return dsl_pattern.sub(r'pl.col("\g<1>")', filter_expr)
+    return dsl_pattern.sub(r'pl.col("\g<1>")', expr)
 
 
 def prepare_expr(expr: str | pl.Expr | None) -> pl.Expr | None:
@@ -50,7 +50,7 @@ def prepare_expr(expr: str | pl.Expr | None) -> pl.Expr | None:
                 pass
             case str() as dsl_str:
                 try:
-                    expr = eval(expand_short_filter(dsl_str))
+                    expr = eval(expand_short_expr(dsl_str))
                 except Exception as e:
                     print(e)
                     raise ValueError(f"Failed to evaluate: {expr=}: {e}")
@@ -158,8 +158,11 @@ class Inventory:
                     raise
 
         repos.hopper.add_filters(*self.filter_exprs)
+        repos.hopper.add_selects(*self.select_exprs)
         repos = repos.hopper.apply_ready_filters()
         self.filter_exprs = tuple(repos.hopper.list_filters())
+        repos = repos.hopper.apply_ready_selects()
+        self.select_exprs = tuple(repos.hopper.list_selects())
         return repos
 
     def _fetch_from_github(self) -> pl.DataFrame:
@@ -290,8 +293,11 @@ class Inventory:
             },
         )
         files.hopper.add_filters(*self.filter_exprs)
+        files.hopper.add_selects(*self.select_exprs)
         files = files.hopper.apply_ready_filters()
         self.filter_exprs = tuple(files.hopper.list_filters())
+        files = files.hopper.apply_ready_selects()
+        self.select_exprs = tuple(files.hopper.list_selects())
         return files
 
     def read_files(

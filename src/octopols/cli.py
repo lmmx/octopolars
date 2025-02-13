@@ -16,9 +16,11 @@ from .inventory import Inventory
 
       The --extract/-x flag reads all matching files (use with caution).
 
-      The --filter/-f flag (if provided) applies 1+ Polars expressions, or f-string-like column DSL that is expanded to them (e.g., '{name}.str.starts_with("a")'), to the DataFrame of repos.
+      The --filter/-f flag (1+ times) applies Polars expressions, or f-string-like column DSL (e.g., '{name}.str.starts_with("a")').
 
-      The --short/-s flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
+      The --select/-s flag (1+ times) applies Polars expressions, or f-string-like column DSL (e.g., '{name}.alias("foo")').
+
+      The --abridged/-a flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
 
     \b
     Examples
@@ -70,15 +72,28 @@ from .inventory import Inventory
     help="Number of table rows to show. Default -1 means show all.",
 )
 @click.option(
-    "-s",
-    "--short",
+    "-a",
+    "--abridged",
     is_flag=True,
-    help="Short mode: overrides --rows and --cols by setting both to None.",
+    help="Abridged mode: overrides --rows and --cols by setting both to None.",
 )
 @click.option(
-    "--filter",
     "-f",
+    "--filter",
     "filter_exprs",
+    default=None,
+    type=str,
+    multiple=True,
+    help=(
+        "One or more Polars expressions or a shorthand DSL expression. "
+        "In the DSL, use {column} to refer to pl.col('column'), "
+        """e.g. '{name}.str.starts_with("a")'."""
+    ),
+)
+@click.option(
+    "-s",
+    "--select",
+    "select_exprs",
     default=None,
     type=str,
     multiple=True,
@@ -95,14 +110,15 @@ def octopols(
     output_format: str,
     rows: int,
     cols: int,
-    short: bool,
+    abridged: bool,
     filter_exprs: tuple[str, ...] | None,
+    select_exprs: tuple[str, ...] | None,
 ) -> None:
     """CLI to print a user's repo listings, with options to walk and read files."""
     # Determine table dimensions
     show_tbl_rows = rows
     show_tbl_cols = cols
-    if short:
+    if abridged:
         show_tbl_rows = None
         show_tbl_cols = None
 
@@ -112,6 +128,7 @@ def octopols(
         show_tbl_rows=show_tbl_rows,
         show_tbl_cols=show_tbl_cols,
         filter_exprs=filter_exprs,
+        select_exprs=select_exprs,
     )
 
     try:

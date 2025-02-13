@@ -113,7 +113,7 @@ For advanced usage like limiting rows/columns, see the [CLI reference](index.md)
 - **`GH_TOKEN`**: Recommended to avoid low rate limits, or else requires [`gh`][gh] to be installed.
 - **Caching**: By default, it caches your repos in a user-specific cache directory.
 - **CLI Flags**: Control recursion, output format, table dimensions, and more via flags:
-  - `--rows`, `--cols`, `--short`: Manage table display size.
+  - `--rows`, `--cols`, `--abridged`: Manage table display size.
   - `--filter`: Apply a Polars-based filter or DSL expression.
 
 [gh]: https://cli.github.com/
