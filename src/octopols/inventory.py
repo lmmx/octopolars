@@ -74,6 +74,7 @@ class Inventory:
         force_refresh: bool = False,
         filter_exprs: tuple[str, ...] | tuple[pl.Expr, ...] = None,
         select_exprs: tuple[str, ...] | tuple[pl.Expr, ...] = None,
+        addcols_exprs: tuple[str, ...] | tuple[pl.Expr, ...] = None,
         show_tbl_cols: int | None = None,
         show_tbl_rows: int | None = None,
     ) -> None:
@@ -101,6 +102,7 @@ class Inventory:
         self.force_refresh = force_refresh
         self.filter_exprs = tuple(map(prepare_expr, filter_exprs or []))
         self.select_exprs = tuple(map(prepare_expr, select_exprs or []))
+        self.addcols_exprs = tuple(map(prepare_expr, addcols_exprs or []))
         self._inventory_df: pl.DataFrame | None = None
 
         # Initialize the cache location
@@ -159,10 +161,15 @@ class Inventory:
 
         repos.hopper.add_filters(*self.filter_exprs)
         repos.hopper.add_selects(*self.select_exprs)
-        repos = repos.hopper.apply_ready_filters()
+        repos.hopper.add_addcols(*self.addcols_exprs)
+        repos = (
+            repos.hopper.apply_ready_filters()
+            .hopper.apply_ready_selects()
+            .hopper.apply_ready_addcols()
+        )
         self.filter_exprs = tuple(repos.hopper.list_filters())
-        repos = repos.hopper.apply_ready_selects()
         self.select_exprs = tuple(repos.hopper.list_selects())
+        self.addcols_exprs = tuple(repos.hopper.list_addcols())
         return repos
 
     def _fetch_from_github(self) -> pl.DataFrame:
@@ -294,10 +301,15 @@ class Inventory:
         )
         files.hopper.add_filters(*self.filter_exprs)
         files.hopper.add_selects(*self.select_exprs)
-        files = files.hopper.apply_ready_filters()
+        files.hopper.add_addcols(*self.addcols_exprs)
+        files = (
+            files.hopper.apply_ready_filters()
+            .hopper.apply_ready_selects()
+            .hopper.apply_ready_addcols()
+        )
         self.filter_exprs = tuple(files.hopper.list_filters())
-        files = files.hopper.apply_ready_selects()
         self.select_exprs = tuple(files.hopper.list_selects())
+        self.addcols_exprs = tuple(files.hopper.list_addcols())
         return files
 
     def read_files(

@@ -16,11 +16,13 @@ from .inventory import Inventory
 
       The --extract/-x flag reads all matching files (use with caution).
 
-      The --filter/-f flag (1+ times) applies Polars expressions, or f-string-like column DSL (e.g., '{name}.str.starts_with("a")').
+      The --filter/-f flag (1+ times) applies `filter` exprs, or f-string-like column DSL (e.g., '{name}.str.starts_with("a")').
 
-      The --select/-s flag (1+ times) applies Polars expressions, or f-string-like column DSL (e.g., '{name}.alias("foo")').
+      The --select/-s flag (1+ times) applies `select` exprs, or f-string-like column DSL (e.g., '{foo}.alias("bar")').
 
-      The --abridged/-a flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
+      The --addcols/-a flag (1+ times) applies `with_columns` exprs, or f-string-like column DSL (e.g., '{total} * 2').
+
+      The --quiet/-q flag switches to a minimal, abridged view. By default, rows and cols are unlimited (-1).
 
     \b
     Examples
@@ -72,10 +74,10 @@ from .inventory import Inventory
     help="Number of table rows to show. Default -1 means show all.",
 )
 @click.option(
-    "-a",
-    "--abridged",
+    "-q",
+    "--quiet",
     is_flag=True,
-    help="Abridged mode: overrides --rows and --cols by setting both to None.",
+    help="Quiet mode: overrides --rows and --cols by setting both to None.",
 )
 @click.option(
     "-f",
@@ -100,7 +102,20 @@ from .inventory import Inventory
     help=(
         "One or more Polars expressions or a shorthand DSL expression. "
         "In the DSL, use {column} to refer to pl.col('column'), "
-        """e.g. '{name}.str.starts_with("a")'."""
+        """e.g. '{foo}.alias("bar")'."""
+    ),
+)
+@click.option(
+    "-a",
+    "--addcols",
+    "addcols_exprs",
+    default=None,
+    type=str,
+    multiple=True,
+    help=(
+        "One or more Polars expressions or a shorthand DSL expression. "
+        "In the DSL, use {column} to refer to pl.col('column'), "
+        """e.g. '{total} * 2'."""
     ),
 )
 def octopols(
@@ -110,15 +125,16 @@ def octopols(
     output_format: str,
     rows: int,
     cols: int,
-    abridged: bool,
+    quiet: bool,
     filter_exprs: tuple[str, ...] | None,
     select_exprs: tuple[str, ...] | None,
+    addcols_exprs: tuple[str, ...] | None,
 ) -> None:
     """CLI to print a user's repo listings, with options to walk and read files."""
     # Determine table dimensions
     show_tbl_rows = rows
     show_tbl_cols = cols
-    if abridged:
+    if quiet:
         show_tbl_rows = None
         show_tbl_cols = None
 
@@ -129,6 +145,7 @@ def octopols(
         show_tbl_cols=show_tbl_cols,
         filter_exprs=filter_exprs,
         select_exprs=select_exprs,
+        addcols_exprs=addcols_exprs,
     )
 
     try:

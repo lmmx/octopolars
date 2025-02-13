@@ -44,7 +44,7 @@ octopolars is supported by:
 - **File tree walking**: Enumerate all files in each repository using `fsspec[github]`, supporting recursion and optional size filters.
 - **Output formats**: Display data in a Polars repr table (which can be [read back in](https://docs.pola.rs/api/python/stable/reference/api/polars.from_repr.html))
   or export to CSV/JSON/NDJSON.
-- **Control table size**: Limit the number of rows or columns displayed, or use `--abridged` mode to quickly preview data.
+- **Control table size**: Limit the number of rows or columns displayed, or use `--quiet` mode to quickly preview data.
 - **Caching**: By default, results are cached in the user’s cache directory to avoid repeated API calls (unless you force refresh).
 
 ## Usage
@@ -67,7 +67,7 @@ Usage: octopols [OPTIONS] USERNAME
     DSL that is expanded to one (e.g., '{name}.str.starts_with("a")'), to the
     DataFrame of repos.
 
-    The --abridged/-a flag switches to a minimal, abridged view. By default, rows
+    The --quiet/-q flag switches to a minimal, abridged view. By default, rows
     and cols are unlimited (-1).
 
   Examples
@@ -98,7 +98,7 @@ Options:
                             show all.
   -r, --rows INTEGER        Number of table rows to show. Default -1 means
                             show all.
-  -a, --abridged            Abridged mode: overrides --rows and --cols by setting
+  -q, --quiet               Quiet mode: overrides --rows and --cols by setting
                             both to None.
   -f, --filter TEXT         A Polars expression or a shorthand DSL expression.
                             In the DSL, use {column} to refer to
@@ -110,7 +110,7 @@ Options:
 #### Example 1: List All Repos for a User
 
 ```bash
-octopols lmmx --abridged
+octopols lmmx --quiet
 ```
 
 Displays a table of all repositories belonging to "lmmx" in abridged format.
@@ -166,10 +166,10 @@ shape: (9, 9)
 #### Example 3: Walk an Entire Repo
 
 ```bash
-octopols lmmx -f '{name} == "mvdef"' --walk --abridged
+octopols lmmx -f '{name} == "mvdef"' --walk --quiet
 ```
 
-Lists all files in the repository named "mvdef", abbreviating the output table in 'abridged' format.
+Lists all files in the repository named "mvdef", abbreviating the output table in 'quiet' format.
 
 ```
 shape: (121, 4)
@@ -283,6 +283,26 @@ shape: (28, 4)
 │ uv-ws-demo      ┆ uv.lock                         ┆ 19814           ┆ version = 1                     │
 │                 ┆                                 ┆                 ┆ requires-python = …             │
 └─────────────────┴─────────────────────────────────┴─────────────────┴─────────────────────────────────┘
+```
+
+#### Example 6: Filter Repos by Name, Add Columns Based on Description
+
+```bash
+octopols lmmx -f '{name}.str.starts_with("d3")' -a '{description}.str.contains("AWS").alias("Will It Cloud?")'
+```
+
+Adds a boolean column called "Will It Cloud?" based on whether the repo description contains "AWS".
+
+```
+shape: (2, 10)
+┌────────────────────┬────────────────┬─────────────────────────────────┬──────────┬─────────┬────────┬───────┬───────┬──────┬────────────────┐
+│ name               ┆ default_branch ┆ description                     ┆ archived ┆ is_fork ┆ issues ┆ stars ┆ forks ┆ size ┆ Will It Cloud? │
+│ ---                ┆ ---            ┆ ---                             ┆ ---      ┆ ---     ┆ ---    ┆ ---   ┆ ---   ┆ ---  ┆ ---            │
+│ str                ┆ str            ┆ str                             ┆ bool     ┆ bool    ┆ i64    ┆ i64   ┆ i64   ┆ i64  ┆ bool           │
+╞════════════════════╪════════════════╪═════════════════════════════════╪══════════╪═════════╪════════╪═══════╪═══════╪══════╪════════════════╡
+│ d3-step-functions  ┆ master         ┆ AWS Step Function visualisatio… ┆ false    ┆ false   ┆ 1      ┆ 1     ┆ 0     ┆ 94   ┆ true           │
+│ d3-wiring-diagrams ┆ master         ┆ Wiring diagram operad visualis… ┆ false    ┆ false   ┆ 2      ┆ 2     ┆ 0     ┆ 111  ┆ false          │
+└────────────────────┴────────────────┴─────────────────────────────────┴──────────┴─────────┴────────┴───────┴───────┴──────┴────────────────┘
 ```
 
 ### Library Usage
