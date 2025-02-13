@@ -91,6 +91,8 @@ class Inventory:
                           or an Expr to filter the repository listing or file walk tree.
             select_exprs: One or more Polars schema (column) names to select, or an
                           Expr to evaluate for the repository listing or file walk tree.
+            addcols_exprs: One or more Polars schema (column) names to with_columns, or an
+                           Expr to evaluate for the repository listing or file walk tree.
             show_tbl_cols: Configure Polars to print N columns if `int` (default: None).
             show_tbl_rows: Configure Polars to print N rows if `int` (default: None).
 

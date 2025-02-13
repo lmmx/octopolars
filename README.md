@@ -63,9 +63,14 @@ Usage: octopols [OPTIONS] USERNAME
 
     The --extract/-x flag reads all matching files (use with caution).
 
-    The --filter/-f flag (if provided) applies a Polars expression, or column
-    DSL that is expanded to one (e.g., '{name}.str.starts_with("a")'), to the
-    DataFrame of repos.
+    The --filter/-f flag (1+ times) applies `filter` exprs, or f-string-like
+    column DSL (e.g., '{name}.str.starts_with("a")').
+
+    The --select/-s flag (1+ times) applies `select` exprs, or f-string-like
+    column DSL (e.g., '{foo}.alias("bar")').
+
+    The --addcols/-a flag (1+ times) applies `with_columns` exprs, or
+    f-string-like column DSL (e.g., '{total} * 2').
 
     The --quiet/-q flag switches to a minimal, abridged view. By default, rows
     and cols are unlimited (-1).
@@ -100,10 +105,16 @@ Options:
                             show all.
   -q, --quiet               Quiet mode: overrides --rows and --cols by setting
                             both to None.
-  -f, --filter TEXT         A Polars expression or a shorthand DSL expression.
-                            In the DSL, use {column} to refer to
+  -f, --filter TEXT         One or more Polars expressions or a shorthand DSL
+                            expression. In the DSL, use {column} to refer to
                             pl.col('column'), e.g.
                             '{name}.str.starts_with("a")'.
+  -s, --select TEXT         One or more Polars expressions or a shorthand DSL
+                            expression. In the DSL, use {column} to refer to
+                            pl.col('column'), e.g. '{foo}.alias("bar")'.
+  -a, --addcols TEXT        One or more Polars expressions or a shorthand DSL
+                            expression. In the DSL, use {column} to refer to
+                            pl.col('column'), e.g. '{total} * 2'.
   --help                    Show this message and exit.
 ```
 
