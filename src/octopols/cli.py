@@ -38,11 +38,15 @@ from .inventory import Inventory
 
     - List only file paths from matching repos
 
-        octopols lmmx -w --filter='{name} == "myrepo"'
+        octopols lmmx -w -f '{name} == "myrepo"'
 
     - Read the *content* of all files from matching repos
 
-        octopols lmmx -x --filter='{name}.str.starts_with("d3")'
+        octopols lmmx -x -f '{name}.str.starts_with("d3")'
+
+    - Filter and sort the repos by stars
+
+        octopols lmmx -f '{stars} > 8' -s 'pl.all().sort_by("stars", descending=True)'
 """,
 )
 @click.argument("username", type=str)

@@ -236,64 +236,39 @@ shape: (12, 4)
 #### Example 5: Filter Repos by Name, Read All Files
 
 ```bash
-octopols lmmx -x --filter='{name}.str.contains("uv")'
+octopols lmmx -x --filter='{name}.str.contains("uv")' --quiet
 ```
 
 Read the content of all files whose repo name starts with "d3" owned by "lmmx".
 
 ```
 shape: (28, 4)
-┌─────────────────┬─────────────────────────────────┬─────────────────┬─────────────────────────────────┐
-│ repository_name ┆ file_path                       ┆ file_size_bytes ┆ content                         │
-│ ---             ┆ ---                             ┆ ---             ┆ ---                             │
-│ str             ┆ str                             ┆ i64             ┆ str                             │
-╞═════════════════╪═════════════════════════════════╪═════════════════╪═════════════════════════════════╡
-│ uv-doc-url-demo ┆ .gitignore                      ┆ 8               ┆ /target                         │
-│                 ┆                                 ┆                 ┆                                 │
-│ uv-doc-url-demo ┆ Cargo.lock                      ┆ 90700           ┆ # This file is automatically @… │
-│ uv-doc-url-demo ┆ Cargo.toml                      ┆ 632             ┆ [package]                       │
-│                 ┆                                 ┆                 ┆ name = "uv-doc-url-d…           │
-│ uv-doc-url-demo ┆ README.md                       ┆ 2361            ┆ # uv-doc-url-demo               │
-│                 ┆                                 ┆                 ┆                                 │
-│                 ┆                                 ┆                 ┆ A Rust proo…                    │
-│ uv-doc-url-demo ┆ src                             ┆ 0               ┆                                 │
-│ uv-doc-url-demo ┆ src/main.rs                     ┆ 4067            ┆ use anyhow::Result;             │
-│                 ┆                                 ┆                 ┆ use regex:…                     │
-│ uv-ws-demo      ┆ README.md                       ┆ 827             ┆ # uvws-demo: uv workspaces dem… │
-│ uv-ws-demo      ┆ packages                        ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/bolded                 ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/bolded/README.md       ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/bolded/pyproject.toml  ┆ 240             ┆ [project]                       │
-│                 ┆                                 ┆                 ┆ name = "bolded"                 │
-│                 ┆                                 ┆                 ┆ vers…                           │
-│ uv-ws-demo      ┆ packages/bolded/src             ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/bolded/src/bolded      ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/bolded/src/bolded/__i… ┆ 64              ┆ from .main import make_text_bo… │
-│ uv-ws-demo      ┆ packages/bolded/src/bolded/mai… ┆ 153             ┆ __all__ = ("make_text_bold",)   │
-│                 ┆                                 ┆                 ┆ …                               │
-│ uv-ws-demo      ┆ packages/tpt                    ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/tpt/README.md          ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/tpt/pyproject.toml     ┆ 312             ┆ [project]                       │
-│                 ┆                                 ┆                 ┆ name = "tpt"                    │
-│                 ┆                                 ┆                 ┆ version…                        │
-│ uv-ws-demo      ┆ packages/tpt/src                ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/tpt/src/tpt            ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ packages/tpt/src/tpt/__init__.… ┆ 60              ┆ from .main import two_plus_two… │
-│ uv-ws-demo      ┆ packages/tpt/src/tpt/main.py    ┆ 229             ┆ from bolded import make_text_b… │
-│ uv-ws-demo      ┆ pyproject.toml                  ┆ 508             ┆ [project]                       │
-│                 ┆                                 ┆                 ┆ name = "workspaces"             │
-│                 ┆                                 ┆                 ┆ …                               │
-│ uv-ws-demo      ┆ src                             ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ src/workspaces                  ┆ 0               ┆                                 │
-│ uv-ws-demo      ┆ src/workspaces/__init__.py      ┆ 45              ┆ from .cli import greet          │
-│                 ┆                                 ┆                 ┆                                 │
-│                 ┆                                 ┆                 ┆ __all_…                         │
-│ uv-ws-demo      ┆ src/workspaces/cli.py           ┆ 461             ┆ from sys import argv            │
-│                 ┆                                 ┆                 ┆                                 │
-│                 ┆                                 ┆                 ┆ from pyd…                       │
-│ uv-ws-demo      ┆ uv.lock                         ┆ 19814           ┆ version = 1                     │
-│                 ┆                                 ┆                 ┆ requires-python = …             │
-└─────────────────┴─────────────────────────────────┴─────────────────┴─────────────────────────────────┘
+┌─────────────────┬────────────────────────────┬─────────────────┬─────────────────────────────────┐
+│ repository_name ┆ file_path                  ┆ file_size_bytes ┆ content                         │
+│ ---             ┆ ---                        ┆ ---             ┆ ---                             │
+│ str             ┆ str                        ┆ i64             ┆ str                             │
+╞═════════════════╪════════════════════════════╪═════════════════╪═════════════════════════════════╡
+│ uv-doc-url-demo ┆ .gitignore                 ┆ 8               ┆ /target                         │
+│                 ┆                            ┆                 ┆                                 │
+│ uv-doc-url-demo ┆ Cargo.lock                 ┆ 90700           ┆ # This file is automatically @… │
+│ uv-doc-url-demo ┆ Cargo.toml                 ┆ 632             ┆ [package]                       │
+│                 ┆                            ┆                 ┆ name = "uv-doc-url-d…           │
+│ uv-doc-url-demo ┆ README.md                  ┆ 2361            ┆ # uv-doc-url-demo               │
+│                 ┆                            ┆                 ┆                                 │
+│                 ┆                            ┆                 ┆ A Rust proo…                    │
+│ uv-doc-url-demo ┆ src                        ┆ 0               ┆                                 │
+│ …               ┆ …                          ┆ …               ┆ …                               │
+│ uv-ws-demo      ┆ src                        ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ src/workspaces             ┆ 0               ┆                                 │
+│ uv-ws-demo      ┆ src/workspaces/__init__.py ┆ 45              ┆ from .cli import greet          │
+│                 ┆                            ┆                 ┆                                 │
+│                 ┆                            ┆                 ┆ __all_…                         │
+│ uv-ws-demo      ┆ src/workspaces/cli.py      ┆ 461             ┆ from sys import argv            │
+│                 ┆                            ┆                 ┆                                 │
+│                 ┆                            ┆                 ┆ from pyd…                       │
+│ uv-ws-demo      ┆ uv.lock                    ┆ 19814           ┆ version = 1                     │
+│                 ┆                            ┆                 ┆ requires-python = …             │
+└─────────────────┴────────────────────────────┴─────────────────┴─────────────────────────────────┘
 ```
 
 #### Example 6: Filter Repos by Name, Add Columns Based on Description
@@ -314,6 +289,28 @@ shape: (2, 10)
 │ d3-step-functions  ┆ master         ┆ AWS Step Function visualisatio… ┆ false    ┆ false   ┆ 1      ┆ 1     ┆ 0     ┆ 94   ┆ true           │
 │ d3-wiring-diagrams ┆ master         ┆ Wiring diagram operad visualis… ┆ false    ┆ false   ┆ 2      ┆ 2     ┆ 0     ┆ 111  ┆ false          │
 └────────────────────┴────────────────┴─────────────────────────────────┴──────────┴─────────┴────────┴───────┴───────┴──────┴────────────────┘
+```
+
+#### Example 7: Filter Repos by Stars, Sort By Stars
+
+```sh
+octopols lmmx -f '{stars} > 8' -s 'pl.all().sort_by("stars", descending=True)'
+```
+
+```
+shape: (6, 9)
+┌──────────────────────────┬────────────────┬─────────────────────────────────┬──────────┬─────────┬────────┬───────┬───────┬───────┐
+│ name                     ┆ default_branch ┆ description                     ┆ archived ┆ is_fork ┆ issues ┆ stars ┆ forks ┆ size  │
+│ ---                      ┆ ---            ┆ ---                             ┆ ---      ┆ ---     ┆ ---    ┆ ---   ┆ ---   ┆ ---   │
+│ str                      ┆ str            ┆ str                             ┆ bool     ┆ bool    ┆ i64    ┆ i64   ┆ i64   ┆ i64   │
+╞══════════════════════════╪════════════════╪═════════════════════════════════╪══════════╪═════════╪════════╪═══════╪═══════╪═══════╡
+│ gdocs2md-html            ┆ master         ┆ Convert a Google Drive Documen… ┆ true     ┆ false   ┆ 12     ┆ 289   ┆ 37    ┆ 92    │
+│ page-dewarp              ┆ master         ┆ Document image dewarping libra… ┆ false    ┆ false   ┆ 8      ┆ 138   ┆ 20    ┆ 11171 │
+│ deforum-stable-diffusion ┆ master         ┆ Refactor of the Deforum Stable… ┆ false    ┆ false   ┆ 6      ┆ 105   ┆ 17    ┆ 68    │
+│ devnotes                 ┆ master         ┆ obscure technical resolutions … ┆ false    ┆ false   ┆ 1      ┆ 89    ┆ 7     ┆ 6122  │
+│ tabsave                  ┆ master         ┆ Super simple Chrome extension … ┆ false    ┆ false   ┆ 20     ┆ 64    ┆ 21    ┆ 1020  │
+│ range-streams            ┆ master         ┆ Streaming range requests in Py… ┆ false    ┆ false   ┆ 10     ┆ 9     ┆ 0     ┆ 402   │
+└──────────────────────────┴────────────────┴─────────────────────────────────┴──────────┴─────────┴────────┴───────┴───────┴───────┘
 ```
 
 ### Library Usage
