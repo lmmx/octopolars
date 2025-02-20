@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import os
-import re
-import subprocess
 from pathlib import Path
 
 import polars as pl
@@ -14,50 +12,8 @@ from github import Github
 from platformdirs import user_cache_dir
 from upath import UPath
 
-
-ENV_GH_TOKEN = os.getenv("GH_TOKEN")
-if ENV_GH_TOKEN is None:
-    try:
-        tokproc = subprocess.run(
-            ["gh", "auth", "token"],
-            capture_output=True,
-            text=True,
-        )
-        ENV_GH_TOKEN = tokproc.stdout.strip()
-    except Exception:
-        print("No token, file listings not available and repo listings rate limited")
-        pass
-
-dsl_pattern = re.compile(r"\{(\w+)\}")
-
-
-def expand_short_expr(expr: str) -> str:
-    """Convert DSL tokens like '{name}' into 'pl.col("name")' for Polars expressions.
-
-    Example: '{name}.str.startswith("a")' -> 'pl.col("name").str.startswith("a")'.
-    """
-    return dsl_pattern.sub(r'pl.col("\g<1>")', expr)
-
-
-def prepare_expr(expr: str | pl.Expr | None) -> pl.Expr | None:
-    """Prepare a Polars expression from either a string DSL or an existing pl.Expr.
-
-    Evaluates the DSL expression if given a string, expanding short filter tokens,
-    and returns the resulting Polars expression. Returns None if expr is None.
-    """
-    if expr is not None:
-        match expr:
-            case pl.Expr() as expr:
-                pass
-            case str() as dsl_str:
-                try:
-                    expr = eval(expand_short_expr(dsl_str))
-                except Exception as e:
-                    print(e)
-                    raise ValueError(f"Failed to evaluate: {expr=}: {e}")
-            case _:
-                raise ValueError(f"Expected pl.Expr or str: {expr}")
-    return expr
+from .auth import ENV_GH_TOKEN
+from .exprs import prepare_expr
 
 
 class Inventory:
