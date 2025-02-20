@@ -400,7 +400,7 @@ It says:
 - Add a "matches" column made from the count of the string "foo" in the "body" column
 - Sort the rows by the matches column
 - Select just the columns "number", "title", "body"
-- Filter to rows with at least one match 
+- Filter to rows with at least one match
 - Write as JSON to STDOUT
 
 ### Library Usage
