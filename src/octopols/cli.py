@@ -7,8 +7,43 @@ import click
 from .inventory import Inventory
 
 
-@click.command(
-    help="""Octopols - A CLI for listing GitHub repos or files by username, with filters.
+class DefaultCommandGroup(click.Group):
+    """A custom Group class to provide a default command by argument parser override.
+
+    - Checks if the user typed a known subcommand or a global option.
+    - If not, it inserts 'repos' as the subcommand, so that "octopols lmmx"
+      behaves like "octopols repos lmmx".
+    """
+
+    def parse_args(self, ctx, args):
+        """Intervene to set repos as default command unless user gave no arguments."""
+        if not args or ctx.resilient_parsing:
+            return super().parse_args(ctx, args)
+
+        # The first token after 'octopols'
+        cmd_name = args[0]
+
+        # Is this first token a recognized subcommand name or a global option like --help?
+        recognized_subcommands = list(self.commands.keys())
+        if cmd_name not in recognized_subcommands and not cmd_name.startswith("-"):
+            # Not a known subcommand, so treat this token as if it were for 'repos'.
+            # Insert "repos" at position 0; "lmmx" becomes the first argument to `repos`.
+            args.insert(0, "repos")
+
+        return super().parse_args(ctx, args)
+
+
+@click.group(cls=DefaultCommandGroup)
+def octopols():
+    """GitHub CLI with 2 subcommands (see their help text for more information).
+
+    If no subcommand is given, the `repos` command is called by default.
+    """
+
+
+@octopols.command(
+    help="""
+    Octopols - A CLI for listing GitHub repos or files by username, with filters.
 
     By default, this prints a table of repositories.
 
@@ -47,7 +82,7 @@ from .inventory import Inventory
     - Filter and sort the repos by stars
 
         octopols lmmx -f '{stars} > 8' -s 'pl.all().sort_by("stars", descending=True)'
-""",
+    """,
 )
 @click.argument("username", type=str)
 @click.option("-w", "--walk", is_flag=True, help="Walk files (default lists repos).")
@@ -55,7 +90,7 @@ from .inventory import Inventory
     "-x",
     "--extract",
     is_flag=True,
-    help="Read the text content of each file (not directories). Use with caution on large sets!",
+    help="Read the text content of each file (not directories). Use with caution!",
 )
 @click.option(
     "-o",
@@ -122,7 +157,7 @@ from .inventory import Inventory
         """e.g. '{total} * 2'."""
     ),
 )
-def octopols(
+def repos(
     username: str,
     walk: bool,
     extract: bool,
@@ -179,3 +214,10 @@ def octopols(
     else:
         # Default: simple table
         click.echo(items)
+
+
+@octopols.command(help="List issues for the given GitHub username.")
+@click.argument("username", type=str)
+def issues(username: str) -> None:
+    """GitHub issues subcommand: 'octopols issues <username>'."""
+    click.echo(f"Listing issues for user: {username}")

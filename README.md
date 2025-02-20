@@ -51,6 +51,26 @@ octopolars is supported by:
 
 ### Command-Line Interface
 
+There are 2 subcommands, `repos` and `issues`.
+
+```sh
+$ octopols --help
+Usage: octopols [OPTIONS] COMMAND [ARGS]...
+
+  GitHub CLI with 2 subcommands (see their help text for more information).
+
+  If no subcommand is given, the `repos` command is called by default.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  issues  List issues for the given GitHub username.
+  repos   Octopols - A CLI for listing GitHub repos or files by username,...
+```
+
+The `repos` one is the default subcommand, and will run with just the `octopols` command plus a username.
+
 ```bash
 Usage: octopols [OPTIONS] USERNAME
 
