@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal
 
 import polars as pl
 from github import Github
@@ -14,6 +15,7 @@ from .exprs import prepare_expr
 
 class IssuesInventory:
     """Retrieve and parse a single GitHub repository’s Issues into a Polars DataFrame.
+
     Provides optional Polars expression filters, selections, and addcols (DSL or native).
 
     Usage Example:
@@ -31,14 +33,15 @@ class IssuesInventory:
         token: str | None = None,
         use_cache: bool = True,
         force_refresh: bool = False,
-        state: Literal[open, closed, all] = "open",
+        state: Literal["open", "closed", "all"] = "open",
         filter_exprs: tuple[str | pl.Expr, ...] = None,
         select_exprs: tuple[str | pl.Expr, ...] = None,
         addcols_exprs: tuple[str | pl.Expr, ...] = None,
         show_tbl_cols: int | None = None,
         show_tbl_rows: int | None = None,
     ) -> None:
-        """Args:
+        """Inventory of GitHub issues.
+
         username: GitHub username/org name.
         repo_name: Name of the GitHub repository.
         lazy: Whether to allow lazy Polars operations (applies to final DataFrame).
@@ -81,6 +84,7 @@ class IssuesInventory:
 
     def list_issues(self) -> pl.DataFrame:
         """Fetch (and possibly cache) all issues from the given repository.
+
         Apply any filter/select/addcols expressions. Return a Polars DataFrame.
 
         If `use_cache` is True, tries reading from the local cache unless `force_refresh`.
