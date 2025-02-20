@@ -386,6 +386,23 @@ shape: (39, 9)
 └────────┴─────────────────────────────────┴───────┴──────────┴───┴───────────────────────────┴────────────────┴─────────────────────────────────┴─────────────────────────────────┘
 ```
 
+### Example 1: Sort issues by frequency of a keyword
+
+```sh
+octopols issues pola-rs/polars -a '{body}.str.count_matches("foo").alias("matches")' -s 'pl.all().sort_by({matches}, descending=True)' -s 'pl.col("number", "title", "body")' -f '{matches} > 0' -o json
+```
+
+This one could be used interactively with `jq` to pretty-print the JSON output, or in a CI workflow.
+
+It says:
+
+- List all the issues on the pola-rs/polars repo
+- Add a "matches" column made from the count of the string "foo" in the "body" column
+- Sort the rows by the matches column
+- Select just the columns "number", "title", "body"
+- Filter to rows with at least one match 
+- Write as JSON to STDOUT
+
 ### Library Usage
 
 You can also import `octopols.Inventory` directly:
