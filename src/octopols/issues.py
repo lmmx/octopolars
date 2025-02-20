@@ -139,6 +139,7 @@ class IssuesInventory:
             'number', 'title', 'state', 'comments', 'created_at', 'updated_at', etc.
         """
         gh = Github(self.token) if self.token else Github()
+        gh.per_page = 100
         repo = gh.get_user(self.username).get_repo(self.repo_name)
 
         # You can customize which fields you want from each issue

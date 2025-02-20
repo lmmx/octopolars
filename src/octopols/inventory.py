@@ -133,6 +133,7 @@ class Inventory:
         Returns a Polars DataFrame with repo information.
         """
         gh = Github(self.token) if self.token else Github()
+        gh.per_page = 100
         user = gh.get_user(self.username)
         repos = user.get_repos()
 
