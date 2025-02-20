@@ -343,48 +343,22 @@ shape: (6, 9)
 
 ### octopols issues
 
-The issues is an extra feature, but is only feasible on smaller repos (the pagination is very slow
-for repos with many issues).
+The issues is an extra feature, and paginates 100 issues at a time (anything above that
+may make you wait a little while).
 
 ```sh
-octopols issues huggingface/peft -q -s 'pl.all().sort_by("user_login")'
+time octopols issues huggingface/transformers > /dev/null
 ```
 
-This lists all of the issues filtered by user.
+```
+Listing issues for user: huggingface, repo: transformers
 
+real    0m24.350s
+user    0m3.148s
+sys     0m0.195s
 ```
-Listing issues for user: huggingface, repo: peft
-shape: (39, 9)
-┌────────┬─────────────────────────────────┬───────┬──────────┬───┬───────────────────────────┬────────────────┬─────────────────────────────────┬─────────────────────────────────┐
-│ number ┆ title                           ┆ state ┆ comments ┆ … ┆ updated_at                ┆ user_login     ┆ labels                          ┆ body                            │
-│ ---    ┆ ---                             ┆ ---   ┆ ---      ┆   ┆ ---                       ┆ ---            ┆ ---                             ┆ ---                             │
-│ i64    ┆ str                             ┆ str   ┆ i64      ┆   ┆ str                       ┆ str            ┆ list[str]                       ┆ str                             │
-╞════════╪═════════════════════════════════╪═══════╪══════════╪═══╪═══════════════════════════╪════════════════╪═════════════════════════════════╪═════════════════════════════════╡
-│ 2372   ┆ O(n^m) to O(n) for finding no … ┆ open  ┆ 0        ┆ … ┆ 2025-02-10T11:54:57+00:00 ┆ AllenHW        ┆ []                              ┆ The code snippet finds modules… │
-                 │el with nested all-line… ┆ open  ┆ 1        ┆ … ┆ 2025-02-20T16:04:14+00:00 ┆ BenjaminBossan ┆ []                              ┆ Resolves #2390
-                               │           ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ There was a …                   │
-│ 2390   ┆ Bug: Using 2 LoRA configs with… ┆ open  ┆ 0        ┆ … ┆ 2025-02-20T12:34:49+00:00 ┆ BenjaminBossan ┆ ["bug", "good first issue"]     ┆ ### System Info                 │
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆                                 │
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ -                               │
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆                                 │
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ ### Who ca…                     │
-│ 2382   ┆ ENH Allow rank/alpha keys to b… ┆ open  ┆ 1        ┆ … ┆ 2025-02-17T16:03:15+00:00 ┆ BenjaminBossan ┆ []                              ┆ See https://github.com/hugging… │
-│ 2381   ┆ Bug when deleting adapters of … ┆ open  ┆ 0        ┆ … ┆ 2025-02-20T12:35:13+00:00 ┆ BenjaminBossan ┆ ["bug"]                         ┆ ### System Info                 │
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆                                 │
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ All PEFT vers…                  │
-│ …      ┆ …                               ┆ …     ┆ …        ┆ … ┆ …                         ┆ …              ┆ …                               ┆ …                               │
-│ 1935   ┆ [Call for contributions] help … ┆ open  ┆ 42       ┆ … ┆ 2025-02-06T14:24:43+00:00 ┆ sayakpaul      ┆ ["wip", "contributions-welcome… ┆ Originally reported by @bghira… │
-│ 2321   ┆ [Warning] `Merge lora module t… ┆ open  ┆ 10       ┆ … ┆ 2025-02-07T11:32:08+00:00 ┆ steveepreston  ┆ []                              ┆ ### System Info                 │
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆                                 │
-                    │                      ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ peft 0.14.0
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ …                               │
-│ 2240   ┆ FIX: bugs of assign=True in lo… ┆ open  ┆ 7        ┆ … ┆ 2025-02-05T12:53:10+00:00 ┆ tomguluson92   ┆ ["wip", "contributions-welcome… ┆ When I load Flux trained lora … │
-│ 2389   ┆ orthogonal lora layer init      ┆ open  ┆ 3        ┆ … ┆ 2025-02-20T12:06:46+00:00 ┆ winglian       ┆ []                              ┆ see: https://datta0.github.io/… │
-                   │RA (EMNLP 2024)        ┆ open  ┆ 4        ┆ … ┆ 2025-02-03T10:09:03+00:00 ┆ wutaiqiang     ┆ []                              ┆ Previous PR:
-│        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ https://github.c…               │
-└────────┴─────────────────────────────────┴───────┴──────────┴───┴───────────────────────────┴────────────────┴─────────────────────────────────┴─────────────────────────────────┘
-```
+
+Some more example usage follows.
 
 ### Example 1: Sort issues by frequency of a keyword
 
