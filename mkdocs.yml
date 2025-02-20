@@ -105,5 +105,8 @@ nav:
   # - Changelog: changelog.md
   - API Reference:
       - api/index.md
+      - "auth": api/auth.md
       - "cli": api/cli.md
+      - "exprs": api/exprs.md
+      - "issues": api/issues.md
       - "inventory": api/inventory.md
