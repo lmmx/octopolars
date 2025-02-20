@@ -334,7 +334,7 @@ def issues(
         show_tbl_cols = None
 
     username, repo_name = repo_id.split("/", 1)
-    click.echo(f"Listing issues for user: {username}, repo: {repo_name}")
+    click.echo(f"Listing issues for user: {username}, repo: {repo_name}", err=True)
     issues_inv = IssuesInventory(
         username=username,
         repo_name=repo_name,
