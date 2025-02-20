@@ -221,11 +221,11 @@ def validate_repo_id(ctx, param, repo_id):
     """Ensure the user typed something like 'owner/repo' with a slash."""
     if "/" not in repo_id:
         raise click.BadParameter(
-            "Repository must be in the format 'owner/repo' (missing slash)."
+            "Repository must be in the format 'owner/repo' (missing slash).",
         )
     if repo_id.count("/") > 1:
         raise click.BadParameter(
-            "Repository must be in the format 'owner/repo' (multiple slashes)."
+            "Repository must be in the format 'owner/repo' (multiple slashes).",
         )
     username, repo_name = repo_id.split("/", 1)
     inventory = Inventory(

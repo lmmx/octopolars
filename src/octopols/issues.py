@@ -13,8 +13,7 @@ from .exprs import prepare_expr
 
 
 class IssuesInventory:
-    """
-    Retrieve and parse a single GitHub repository’s Issues into a Polars DataFrame.
+    """Retrieve and parse a single GitHub repository’s Issues into a Polars DataFrame.
     Provides optional Polars expression filters, selections, and addcols (DSL or native).
 
     Usage Example:
@@ -32,27 +31,27 @@ class IssuesInventory:
         token: str | None = None,
         use_cache: bool = True,
         force_refresh: bool = False,
-        state: Literal["open", "closed", "all"] = "open",
+        state: Literal[open, closed, all] = "open",
         filter_exprs: tuple[str | pl.Expr, ...] = None,
         select_exprs: tuple[str | pl.Expr, ...] = None,
         addcols_exprs: tuple[str | pl.Expr, ...] = None,
         show_tbl_cols: int | None = None,
         show_tbl_rows: int | None = None,
     ) -> None:
-        """
-        Args:
-            username: GitHub username/org name.
-            repo_name: Name of the GitHub repository.
-            lazy: Whether to allow lazy Polars operations (applies to final DataFrame).
-            token: A GitHub token for higher rate limits.
-            use_cache: If True, use local cache before hitting GitHub.
-            force_refresh: If True, skip cache and refetch from GitHub.
-            state: Whether to get "open" issues (default), "closed", or both ("all").
-            filter_exprs: Polars expressions (str DSL or pl.Expr) to filter issues by.
-            select_exprs: Polars expressions (str DSL or pl.Expr) to select columns.
-            addcols_exprs: Polars expressions (str DSL or pl.Expr) to add computed columns.
-            show_tbl_cols: If set, configure Polars to print up to N columns.
-            show_tbl_rows: If set, configure Polars to print up to N rows.
+        """Args:
+        username: GitHub username/org name.
+        repo_name: Name of the GitHub repository.
+        lazy: Whether to allow lazy Polars operations (applies to final DataFrame).
+        token: A GitHub token for higher rate limits.
+        use_cache: If True, use local cache before hitting GitHub.
+        force_refresh: If True, skip cache and refetch from GitHub.
+        state: Whether to get "open" issues (default), "closed", or both ("all").
+        filter_exprs: Polars expressions (str DSL or pl.Expr) to filter issues by.
+        select_exprs: Polars expressions (str DSL or pl.Expr) to select columns.
+        addcols_exprs: Polars expressions (str DSL or pl.Expr) to add computed columns.
+        show_tbl_cols: If set, configure Polars to print up to N columns.
+        show_tbl_rows: If set, configure Polars to print up to N rows.
+
         """
         self.username = username
         self.repo_name = repo_name
@@ -81,8 +80,7 @@ class IssuesInventory:
             self._cfg.set_tbl_rows(show_tbl_rows)
 
     def list_issues(self) -> pl.DataFrame:
-        """
-        Fetch (and possibly cache) all issues from the given repository.
+        """Fetch (and possibly cache) all issues from the given repository.
         Apply any filter/select/addcols expressions. Return a Polars DataFrame.
 
         If `use_cache` is True, tries reading from the local cache unless `force_refresh`.
@@ -111,7 +109,7 @@ class IssuesInventory:
                 cached = self._read_cache()
                 if cached is not None:
                     print(
-                        f"Warning: GitHub fetch failed ({exc}), returning cached data."
+                        f"Warning: GitHub fetch failed ({exc}), returning cached data.",
                     )
                     df = cached
                 else:
@@ -131,8 +129,7 @@ class IssuesInventory:
         return df
 
     def _fetch_issues_from_github(self) -> pl.DataFrame:
-        """
-        Retrieve issues for the repo `username/repo_name` from GitHub.
+        """Retrieve issues for the repo `username/repo_name` from GitHub.
 
         Returns a Polars DataFrame with columns like:
             'number', 'title', 'state', 'comments', 'created_at', 'updated_at', etc.
@@ -159,7 +156,7 @@ class IssuesInventory:
                     "user_login": issue.user.login if issue.user else None,
                     "labels": [lbl.name for lbl in issue.labels],
                     "body": issue.body or "",
-                }
+                },
             )
 
         df = pl.DataFrame(data)

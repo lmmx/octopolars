@@ -362,7 +362,7 @@ shape: (39, 9)
 ╞════════╪═════════════════════════════════╪═══════╪══════════╪═══╪═══════════════════════════╪════════════════╪═════════════════════════════════╪═════════════════════════════════╡
 │ 2372   ┆ O(n^m) to O(n) for finding no … ┆ open  ┆ 0        ┆ … ┆ 2025-02-10T11:54:57+00:00 ┆ AllenHW        ┆ []                              ┆ The code snippet finds modules… │
                  │el with nested all-line… ┆ open  ┆ 1        ┆ … ┆ 2025-02-20T16:04:14+00:00 ┆ BenjaminBossan ┆ []                              ┆ Resolves #2390
-                               │           ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ 
+                               │           ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆
 │        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆ There was a …                   │
 │ 2390   ┆ Bug: Using 2 LoRA configs with… ┆ open  ┆ 0        ┆ … ┆ 2025-02-20T12:34:49+00:00 ┆ BenjaminBossan ┆ ["bug", "good first issue"]     ┆ ### System Info                 │
 │        ┆                                 ┆       ┆          ┆   ┆                           ┆                ┆                                 ┆                                 │
