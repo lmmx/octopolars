@@ -142,8 +142,6 @@ class IssuesInventory:
         gh.per_page = 100
         repo = gh.get_user(self.username).get_repo(self.repo_name)
 
-        # You can customize which fields you want from each issue
-        # Here is a minimal example:
         data = []
         for issue in repo.get_issues(state=self.state):
             data.append(
@@ -158,13 +156,29 @@ class IssuesInventory:
                     "updated_at": issue.updated_at.isoformat()
                     if issue.updated_at
                     else None,
-                    "user_login": issue.user.login if issue.user else None,
+                    "author": issue.user.login if issue.user else None,
                     "labels": [lbl.name for lbl in issue.labels],
                     "body": issue.body or "",
                 },
             )
 
-        df = pl.DataFrame(data)
+        df = pl.DataFrame(
+            data,
+            schema={
+                "number": pl.Int64,
+                "title": pl.String,
+                "state": pl.String,
+                "comments": pl.Int64,
+                "created_at": pl.String,
+                "updated_at": pl.String,
+                "author": pl.String,
+                "labels": pl.List(pl.String),
+                "body": pl.String,
+            },
+        ).with_columns(
+            pl.col("created_at").cast(pl.Datetime),
+            pl.col("updated_at").cast(pl.Datetime),
+        )
         if self.lazy:
             return df.lazy().collect()
         else:
