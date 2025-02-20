@@ -239,12 +239,121 @@ def validate_repo_id(ctx, param, repo_id):
     return repo_id
 
 
+def validate_issue_state(ctx, param, state):
+    """Ensure the user typed one of: "open", "closed", "all"."""
+    state_options = {"open", "closed", "all"}
+    if state not in state_options:
+        raise click.BadParameter(f"Repository must be one of {state_options}.")
+    return state
+
+
 @octopols.command(help="List issues for the given GitHub username.")
 @click.argument("repo_id", type=str, callback=validate_repo_id)
-def issues(repo_id: str) -> None:
+@click.argument("state", default="open", type=str, callback=validate_issue_state)
+@click.option(
+    "-o",
+    "--output-format",
+    default="table",
+    help="Output format: table, csv, json, or ndjson.",
+)
+@click.option(
+    "-c",
+    "--cols",
+    default=-1,
+    type=int,
+    help="Number of table columns to show. Default -1 means show all.",
+)
+@click.option(
+    "-r",
+    "--rows",
+    default=-1,
+    type=int,
+    help="Number of table rows to show. Default -1 means show all.",
+)
+@click.option(
+    "-q",
+    "--quiet",
+    is_flag=True,
+    help="Quiet mode: overrides --rows and --cols by setting both to None.",
+)
+@click.option(
+    "-f",
+    "--filter",
+    "filter_exprs",
+    default=None,
+    type=str,
+    multiple=True,
+    help=(
+        "One or more Polars expressions or a shorthand DSL expression. "
+        "In the DSL, use {column} to refer to pl.col('column'), "
+        """e.g. '{title}.str.starts_with("a")'."""
+    ),
+)
+@click.option(
+    "-s",
+    "--select",
+    "select_exprs",
+    default=None,
+    type=str,
+    multiple=True,
+    help=(
+        "One or more Polars expressions or a shorthand DSL expression. "
+        "In the DSL, use {column} to refer to pl.col('column'), "
+        """e.g. '{foo}.alias("bar")'."""
+    ),
+)
+@click.option(
+    "-a",
+    "--addcols",
+    "addcols_exprs",
+    default=None,
+    type=str,
+    multiple=True,
+    help=(
+        "One or more Polars expressions or a shorthand DSL expression. "
+        "In the DSL, use {column} to refer to pl.col('column'), "
+        """e.g. '{total} * 2'."""
+    ),
+)
+def issues(
+    repo_id: str,
+    state: str,
+    output_format: str,
+    rows: int,
+    cols: int,
+    quiet: bool,
+    filter_exprs: tuple[str, ...] | None,
+    select_exprs: tuple[str, ...] | None,
+    addcols_exprs: tuple[str, ...] | None,
+) -> None:
     """GitHub issues subcommand: 'octopols issues <username>'."""
+    show_tbl_rows = rows
+    show_tbl_cols = cols
+    if quiet:
+        show_tbl_rows = None
+        show_tbl_cols = None
+
     username, repo_name = repo_id.split("/", 1)
     click.echo(f"Listing issues for user: {username}, repo: {repo_name}")
-    issues_inv = IssuesInventory(username=username, repo_name=repo_name)
-    issues = issues_inv.list_issues()
-    click.echo(issues)
+    issues_inv = IssuesInventory(
+        username=username,
+        repo_name=repo_name,
+        state=state,
+        show_tbl_rows=show_tbl_rows,
+        show_tbl_cols=show_tbl_cols,
+        filter_exprs=filter_exprs,
+        select_exprs=select_exprs,
+        addcols_exprs=addcols_exprs,
+    )
+    items = issues_inv.list_issues()
+
+    # Output in the requested format
+    if output_format == "csv":
+        click.echo(items.write_csv())
+    elif output_format == "json":
+        click.echo(items.write_json())
+    elif output_format == "ndjson":
+        click.echo(items.write_ndjson())
+    else:
+        # Default: simple table
+        click.echo(items)

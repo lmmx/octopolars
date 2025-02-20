@@ -32,6 +32,7 @@ class IssuesInventory:
         token: str | None = None,
         use_cache: bool = True,
         force_refresh: bool = False,
+        state: Literal["open", "closed", "all"] = "open",
         filter_exprs: tuple[str | pl.Expr, ...] = None,
         select_exprs: tuple[str | pl.Expr, ...] = None,
         addcols_exprs: tuple[str | pl.Expr, ...] = None,
@@ -46,6 +47,7 @@ class IssuesInventory:
             token: A GitHub token for higher rate limits.
             use_cache: If True, use local cache before hitting GitHub.
             force_refresh: If True, skip cache and refetch from GitHub.
+            state: Whether to get "open" issues (default), "closed", or both ("all").
             filter_exprs: Polars expressions (str DSL or pl.Expr) to filter issues by.
             select_exprs: Polars expressions (str DSL or pl.Expr) to select columns.
             addcols_exprs: Polars expressions (str DSL or pl.Expr) to add computed columns.
@@ -58,6 +60,7 @@ class IssuesInventory:
         self.token = token if token is not None else ENV_GH_TOKEN
         self.use_cache = use_cache
         self.force_refresh = force_refresh
+        self.state = state
 
         # Convert all DSL or Expr inputs into Polars Expr
         self.filter_exprs = tuple(map(prepare_expr, filter_exprs or []))
@@ -140,7 +143,7 @@ class IssuesInventory:
         # You can customize which fields you want from each issue
         # Here is a minimal example:
         data = []
-        for issue in repo.get_issues(state="all"):
+        for issue in repo.get_issues(state=self.state):
             data.append(
                 {
                     "number": issue.number,
