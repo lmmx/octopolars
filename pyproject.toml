@@ -6,7 +6,7 @@ requires = [
 
 [project]
 authors = [
-    {email = "louismmx@gmail.com", name = "Louis Maddox"},
+    { email = "louismmx@gmail.com", name = "Louis Maddox" },
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -40,11 +40,13 @@ keywords = [
     "polars",
     "repositories",
 ]
-license = {text = "MIT"}
 name = "octopolars"
 readme = "README.md"
 requires-python = ">=3.11"
-version = "1.0.3"
+version = "1.1.0"
+
+[project.license]
+text = "MIT"
 
 [project.optional-dependencies]
 dev = [
@@ -78,18 +80,35 @@ Documentation = "https://octopolars.vercel.app/"
 Homepage = "https://github.com/lmmx/octopols"
 Repository = "https://github.com/lmmx/octopols.git"
 
-[tool.ruff]
-
 [tool.ruff.lint]
-ignore = ["C408", "C901", "E501", "E722", "E741"]
-select = ["C", "D", "E", "F", "I", "UP", "W"]
+ignore = [
+    "C408",
+    "C901",
+    "E501",
+    "E722",
+    "E741",
+]
+select = [
+    "C",
+    "D",
+    "E",
+    "F",
+    "I",
+    "UP",
+    "W",
+]
 
 [tool.ruff.lint.isort]
-known-first-party = ["octopols"]
+known-first-party = [
+    "octopols",
+]
 lines-after-imports = 2
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["E401", "F401"]
+"__init__.py" = [
+    "E401",
+    "F401",
+]
 
 [tool.tomlsort]
 all = true
