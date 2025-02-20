@@ -217,7 +217,16 @@ def repos(
 
 
 @octopols.command(help="List issues for the given GitHub username.")
-@click.argument("username", type=str)
-def issues(username: str) -> None:
+@click.argument("repo_id", type=str)
+def issues(repo_id: str) -> None:
     """GitHub issues subcommand: 'octopols issues <username>'."""
-    click.echo(f"Listing issues for user: {username}")
+    username, repo_name = repo_id.split("/", 1)
+    click.echo(f"Listing issues for user: {username}, repo: {repo_name}")
+    inventory = Inventory(
+        username=username,
+        filter_exprs=["{name} == " + repr(repo_name)],
+        select_exprs=["{name}"],
+    )
+    repos = inventory.list_repos()
+    if repos.is_empty():
+        click.echo(f"User {username} has no such repo {repo_name!r}")
