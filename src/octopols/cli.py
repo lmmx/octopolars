@@ -356,4 +356,15 @@ def issues(
         click.echo(items.write_ndjson())
     else:
         # Default: simple table
-        click.echo(items)
+        import json
+
+        import polars as pl
+        import polars.selectors as cs
+
+        click.echo(
+            items.with_columns(
+                cs.string().map_elements(
+                    lambda x: json.dumps(x)[1:-1], return_dtype=pl.String
+                )
+            )
+        )
