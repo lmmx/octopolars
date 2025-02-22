@@ -364,7 +364,8 @@ def issues(
         click.echo(
             items.with_columns(
                 cs.string().map_elements(
-                    lambda x: json.dumps(x)[1:-1], return_dtype=pl.String
-                )
-            )
+                    lambda x: json.dumps(x)[1:-1],
+                    return_dtype=pl.String,
+                ),
+            ),
         )
