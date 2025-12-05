@@ -97,7 +97,7 @@ def octopols():
     "-o",
     "--output-format",
     default="table",
-    help="Output format: table, csv, json, or ndjson.",
+    help="Output format: table, parquet, csv, json, or ndjson.",
 )
 @click.option(
     "-c",
@@ -208,6 +208,10 @@ def repos(
     # Output in the requested format
     if output_format == "csv":
         click.echo(items.write_csv())
+    elif output_format == "parquet":
+        out_path = f"{username}_repos.parquet"
+        items.write_parquet(out_path)
+        click.echo(f"Wrote parquet to {out_path}")
     elif output_format == "json":
         click.echo(items.write_json())
     elif output_format == "ndjson":
@@ -254,7 +258,7 @@ def validate_issue_state(ctx, param, state):
     "-o",
     "--output-format",
     default="table",
-    help="Output format: table, csv, json, or ndjson.",
+    help="Output format: table, parquet, csv, json, or ndjson.",
 )
 @click.option(
     "-c",
@@ -350,6 +354,10 @@ def issues(
     # Output in the requested format
     if output_format == "csv":
         click.echo(items.write_csv())
+    elif output_format == "parquet":
+        out_path = f"{username}_issues.parquet"
+        items.write_parquet(out_path)
+        click.echo(f"Wrote parquet to {out_path}")
     elif output_format == "json":
         click.echo(items.write_json())
     elif output_format == "ndjson":
