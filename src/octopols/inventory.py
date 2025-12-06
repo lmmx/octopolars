@@ -66,7 +66,7 @@ class Inventory:
 
         # Initialize the cache location
         self._cache_dir = Path(user_cache_dir(appname="octopols"))
-        self._cache_dir.mkdir(exist_ok=True)
+        self._cache_dir.mkdir(parents=True, exist_ok=True)
         self._cache_file = self._cache_dir / f"{username}_repos.json"
         self._cfg = pl.Config()
         if show_tbl_cols is not None:
