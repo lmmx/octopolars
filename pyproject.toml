@@ -19,6 +19,12 @@ docs = [
     "ruff>=0.9.5",
     "urllib3<2",
 ]
+polars = [
+    "polars>=1.21.0",
+]
+polars-lts-cpu = [
+    "polars-lts-cpu>=1.21.0",
+]
 test = ["pytest>=7.4"]
 
 [project]
@@ -119,4 +125,4 @@ spaces_indent_inline_array = 4
 trailing_comma_inline_array = true
 
 [tool.uv]
-default-groups = ["dev", "docs", "test"]
+default-groups = ["dev", "docs", "polars", "test"]

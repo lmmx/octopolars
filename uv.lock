@@ -937,6 +937,14 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+polars = [
+    { name = "polars" },
+]
+polars-lts-cpu = [
+    { name = "polars-lts-cpu" },
+]
+
+[package.dev-dependencies]
 dev = [
     { name = "pdm" },
     { name = "pdm-bump" },
@@ -959,33 +967,45 @@ polars = [
 polars-lts-cpu = [
     { name = "polars-lts-cpu" },
 ]
+test = [
+    { name = "pytest" },
+]
 
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.1.8" },
     { name = "dulwich", specifier = ">=0.22.7" },
     { name = "fsspec", extras = ["github"], specifier = ">=2025.2.0" },
-    { name = "livereload", marker = "extra == 'docs'", specifier = ">=2.7.1" },
-    { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.5.3" },
-    { name = "mkdocs-extra-sass-mathshim", marker = "extra == 'docs'", specifier = ">=0.1.0" },
-    { name = "mkdocs-material", extras = ["recommended", "imaging"], marker = "extra == 'docs'", specifier = ">=9.5.2" },
-    { name = "mkdocs-section-index", marker = "extra == 'docs'", specifier = ">=0.3.8" },
-    { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=0.24.0" },
-    { name = "pdm", marker = "extra == 'dev'", specifier = ">=2.22.3" },
-    { name = "pdm-bump", marker = "extra == 'dev'", specifier = ">=0.9.10" },
     { name = "platformdirs", specifier = ">=4.3.6" },
     { name = "polars", marker = "extra == 'polars'", specifier = ">=1.21.0" },
     { name = "polars-expr-hopper", specifier = ">=1.1.0" },
     { name = "polars-lts-cpu", marker = "extra == 'polars-lts-cpu'", specifier = ">=1.21.0" },
-    { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=4.1.0" },
     { name = "pygithub", specifier = ">=2.5.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.4" },
     { name = "requests", specifier = ">=2.32.3" },
-    { name = "ruff", marker = "extra == 'docs'", specifier = ">=0.9.5" },
     { name = "universal-pathlib", specifier = ">=0.2.6" },
-    { name = "urllib3", marker = "extra == 'docs'", specifier = "<2" },
 ]
-provides-extras = ["dev", "docs", "polars", "polars-lts-cpu"]
+provides-extras = ["polars", "polars-lts-cpu"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pdm", specifier = ">=2.22.3" },
+    { name = "pdm-bump", specifier = ">=0.9.10" },
+    { name = "pre-commit", specifier = ">=4.1.0" },
+    { name = "pytest", specifier = ">=8.3.4" },
+]
+docs = [
+    { name = "livereload", specifier = ">=2.7.1" },
+    { name = "mkdocs", specifier = ">=1.5.3" },
+    { name = "mkdocs-extra-sass-mathshim", specifier = ">=0.1.0" },
+    { name = "mkdocs-material", extras = ["recommended", "imaging"], specifier = ">=9.5.2" },
+    { name = "mkdocs-section-index", specifier = ">=0.3.8" },
+    { name = "mkdocstrings", extras = ["python"], specifier = ">=0.24.0" },
+    { name = "ruff", specifier = ">=0.9.5" },
+    { name = "urllib3", specifier = "<2" },
+]
+polars = [{ name = "polars", specifier = ">=1.21.0" }]
+polars-lts-cpu = [{ name = "polars-lts-cpu", specifier = ">=1.21.0" }]
+test = [{ name = "pytest", specifier = ">=7.4" }]
 
 [[package]]
 name = "packaging"
