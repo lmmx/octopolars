@@ -1121,7 +1121,7 @@ requires-dist = [
     { name = "polars", marker = "extra == 'polars'", specifier = ">=1.21.0" },
     { name = "polars-expr-hopper", specifier = ">=1.1.0" },
     { name = "polars-lts-cpu", marker = "extra == 'polars-lts-cpu'", specifier = ">=1.21.0" },
-    { name = "pygithub", specifier = ">=2.5.0" },
+    { name = "pygithub", specifier = ">=2.8.0" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "universal-pathlib", specifier = ">=0.2.6" },
 ]
