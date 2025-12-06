@@ -1,8 +1,6 @@
 [build-system]
 build-backend = "pdm.backend"
-requires = [
-    "pdm-backend",
-]
+requires = ["pdm-backend"]
 
 [project]
 authors = [
@@ -49,6 +47,14 @@ version = "1.1.6"
 text = "MIT"
 
 [project.optional-dependencies]
+polars = [
+    "polars>=1.21.0",
+]
+polars-lts-cpu = [
+    "polars-lts-cpu>=1.21.0",
+]
+
+[dependency-groups]
 dev = [
     "pdm-bump>=0.9.10",
     "pdm>=2.22.3",
@@ -65,12 +71,10 @@ docs = [
     "ruff>=0.9.5",
     "urllib3<2",
 ]
-polars = [
-    "polars>=1.21.0",
-]
-polars-lts-cpu = [
-    "polars-lts-cpu>=1.21.0",
-]
+test = ["pytest>=7.4"]
+
+[tool.uv]
+default-groups = ["dev", "docs", "test"]
 
 [project.scripts]
 octopols = "octopols.cli:octopols"
