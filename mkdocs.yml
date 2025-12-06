@@ -79,7 +79,7 @@ plugins:
       default_handler: python
       handlers:
         python:
-          paths: [src/*/]
+          paths: [src]
           options:
             members_order: source
             separate_signature: true
