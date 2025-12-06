@@ -40,6 +40,7 @@ jobs:
                 (.v.major == 3) and
                 (.v.minor >= $minv.minor)
               ))
+            | map(select(.t != "freethreaded")) # Delete this line to include FT variants
             | map("\(.v.major).\(.v.minor)\(if .t=="freethreaded" then "t" else "" end)")')
 
           PYPY_VERSIONS=$(echo "$LIST" | jq -c --arg min "$MIN_VERSION" '
