@@ -43,18 +43,19 @@ jobs:
             | map(select(.t != "freethreaded")) # Delete this line to include FT variants
             | map("\(.v.major).\(.v.minor)\(if .t=="freethreaded" then "t" else "" end)")')
 
-          PYPY_VERSIONS=$(echo "$LIST" | jq -c --arg min "$MIN_VERSION" '
-            ($min | split(".") | {major: .[0]|tonumber, minor: .[1]|tonumber}) as $minv |
-            [.[] | {v:.version_parts, t:.variant, impl:.implementation}]
-            | unique_by([.v.minor,.impl])
-            | map(select(
-                (.impl == "pypy") and
-                (.v.major == 3) and
-                (.v.minor >= $minv.minor)
-              ))
-            | map("pypy-\(.v.major).\(.v.minor)")')
+          # PYPY_VERSIONS=$(echo "$LIST" | jq -c --arg min "$MIN_VERSION" '
+          #   ($min | split(".") | {major: .[0]|tonumber, minor: .[1]|tonumber}) as $minv |
+          #   [.[] | {v:.version_parts, t:.variant, impl:.implementation}]
+          #   | unique_by([.v.minor,.impl])
+          #   | map(select(
+          #       (.impl == "pypy") and
+          #       (.v.major == 3) and
+          #       (.v.minor >= $minv.minor)
+          #     ))
+          #   | map("pypy-\(.v.major).\(.v.minor)")')
 
-          versions=$(jq -nc --argjson a "$CPYTHON_VERSIONS" --argjson b "$PYPY_VERSIONS" '$a + $b')
+          # versions=$(jq -nc --argjson a "$CPYTHON_VERSIONS" --argjson b "$PYPY_VERSIONS" '$a + $b')
+          versions=$(jq -nc --argjson a "$CPYTHON_VERSIONS" '$a')
 
           echo "python-versions=$versions" >> $GITHUB_OUTPUT
 
