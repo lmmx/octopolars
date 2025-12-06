@@ -52,7 +52,7 @@ dependencies = [
     "fsspec[github]>=2025.2.0",
     "platformdirs>=4.3.6",
     "polars-expr-hopper>=1.1.0",
-    "pygithub>=2.5.0",
+    "pygithub>=2.8.0",
     "requests>=2.32.3",
     "universal-pathlib>=0.2.6",
 ]
