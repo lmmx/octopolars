@@ -7,7 +7,6 @@ dev = [
     "pdm-bump>=0.9.10",
     "pdm>=2.22.3",
     "pre-commit>=4.1.0",
-    "pytest>=8.3.4",
 ]
 docs = [
     "livereload>=2.7.1",
@@ -25,7 +24,7 @@ polars = [
 polars-lts-cpu = [
     "polars-lts-cpu>=1.21.0",
 ]
-test = ["pytest>=7.4"]
+test = ["pytest>=8.3.4"]
 
 [project]
 authors = [
