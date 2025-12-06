@@ -74,7 +74,7 @@ The `repos` one is the default subcommand, and will run with just the `octopols`
 ### octopols repos
 
 ```bash
-Usage: octopols [OPTIONS] USERNAME
+Usage: octopols repos [OPTIONS] USERNAME
 
   Octopols - A CLI for listing GitHub repos or files by username, with
   filters.
@@ -124,8 +124,8 @@ Usage: octopols [OPTIONS] USERNAME
 Options:
   -w, --walk                Walk files (default lists repos).
   -x, --extract             Read the text content of each file (not
-                            directories). Use with caution on large sets!
-  -o, --output-format TEXT  Output format: table, csv, json, or ndjson.
+                            directories). Use with caution!
+  -o, --output-format TEXT  Output format: table, parquet, csv, json, or ndjson.
   -c, --cols INTEGER        Number of table columns to show. Default -1 means
                             show all.
   -r, --rows INTEGER        Number of table rows to show. Default -1 means
