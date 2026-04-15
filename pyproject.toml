@@ -16,12 +16,8 @@ docs = [
     "ruff>=0.9.5",
     "urllib3<2",
 ]
-polars = [
-    "polars>=1.21.0",
-]
-polars-lts-cpu = [
-    "polars-lts-cpu>=1.21.0",
-]
+lts-cpu = ["polars[rtcompat]>=1.30"]
+polars = ["polars>=1.30"]
 test = ["pytest>=8.3.4"]
 
 [project]
@@ -35,11 +31,11 @@ classifiers = [
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python",
 ]
@@ -69,12 +65,8 @@ version = "1.1.7"
 text = "MIT"
 
 [project.optional-dependencies]
-polars = [
-    "polars>=1.21.0",
-]
-polars-lts-cpu = [
-    "polars-lts-cpu>=1.21.0",
-]
+lts-cpu = ["polars[rtcompat]>=1.30"]
+polars = ["polars>=1.30"]
 
 [project.scripts]
 octopols = "octopols.cli:octopols"
