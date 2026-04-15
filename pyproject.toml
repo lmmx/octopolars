@@ -1,12 +1,10 @@
 [build-system]
-build-backend = "pdm.backend"
-requires = ["pdm-backend"]
+build-backend = "uv_build"
+requires = ["uv_build>=0.11.6,<0.12"]
 
 [dependency-groups]
 dev = [
-    "pdm-bump>=0.9.10",
-    "pdm>=2.22.3",
-    "pre-commit>=4.1.0",
+    "pdbpp>=0.12.1",
 ]
 docs = [
     "livereload>=2.7.1",
@@ -125,3 +123,7 @@ trailing_comma_inline_array = true
 
 [tool.uv]
 default-groups = ["dev", "polars", "test"]
+
+[tool.uv.build-backend]
+module-name = "octopols"
+module-root = "src"

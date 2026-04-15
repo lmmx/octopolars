@@ -2,7 +2,6 @@
 
 <!-- [![downloads](https://static.pepy.tech/badge/octopolars/month)](https://pepy.tech/project/octopolars) -->
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
-[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
 [![PyPI](https://img.shields.io/pypi/v/octopolars.svg)](https://pypi.org/project/octopolars)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/octopolars.svg)](https://pypi.org/project/octopolars)
 [![License](https://img.shields.io/pypi/l/octopolars.svg)](https://pypi.python.org/pypi/octopolars)
