@@ -63,9 +63,9 @@ For advanced usage like limiting rows/columns, see the [CLI reference](index.md)
    git clone https://github.com/lmmx/octopolars.git
    ```
 2. **Install Dependencies**:
-   - If you’re using [pdm](https://pdm.fming.dev/latest/):
+   - If you’re using [uv](https://docs.astral.sh/uv/):
      ```bash
-     pdm install
+     uv sync
      ```
    - Otherwise, standard pip:
      ```bash
