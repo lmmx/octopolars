@@ -83,8 +83,8 @@ octopols = "octopols.cli:octopols"
 
 [project.urls]
 Documentation = "https://octopolars.vercel.app/"
-Homepage = "https://github.com/lmmx/octopols"
-Repository = "https://github.com/lmmx/octopols.git"
+Homepage = "https://github.com/lmmx/octopolars"
+Repository = "https://github.com/lmmx/octopolars.git"
 
 [tool.ruff.lint]
 ignore = [
